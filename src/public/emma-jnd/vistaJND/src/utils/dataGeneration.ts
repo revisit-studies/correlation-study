@@ -38,7 +38,9 @@ export function generateDataSetFixed(r, seed) {
 
   const xAry = getSTDNormalDistriArrayFixed(randomNumber);
   let yAry = getSTDNormalDistriArrayFixed(randomNumber);
+
   const rz = getCorrelation(xAry, yAry);
+
   const lam = getLambda(r, rz);
   yAry = yTransform(xAry, yAry, lam);
   return xAry.map((d, i) => (r < 0 ? [d, -yAry[i]] : [d, yAry[i]]));

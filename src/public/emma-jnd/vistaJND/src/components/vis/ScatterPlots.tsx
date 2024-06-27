@@ -1,0 +1,79 @@
+import { scaleLinear } from 'd3-scale';
+import * as d3 from 'd3';
+import { axisLeft } from 'd3-axis';
+import { useCallback, useEffect, useRef } from 'react';
+import { select } from 'd3-selection';
+import { axisBottom } from 'd3';
+import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneration';
+import { StimulusParams } from '../../../../../../store/types';
+
+export default function ScatterPlots({ r } : { r: number}) {
+  const d3Container = useRef(null);
+
+  const createChart = useCallback(() => {
+    const width = 300;
+    const height = 300;
+    const data = generateDataSetFixed(r, Date.now());
+    // data in format [x1,y1], [x2,y2]
+    const margin = {
+      left: 40,
+      top: 20,
+      right: 20,
+      bottom: 20,
+    };
+
+    const innerHeight = height - margin.bottom;
+    const innerWidth = width - margin.left - margin.right;
+
+    console.log(data);
+
+    const xAry = data.map((d) => d[0]);
+    const yAry = data.map((d) => d[1]);
+    const xScale = scaleLinear().range([0, innerWidth]);
+    const yScale = scaleLinear().range([innerHeight, 0]);
+    const xAxis = axisBottom(xScale)
+      .tickSize(0)
+      .tickFormat((d) => '');
+
+    const yAxis = axisLeft(yScale)
+      .tickSize(0);
+
+    const svg = select(d3Container.current)
+      .attr('width', width)
+      .attr('height', height);
+
+    svg.selectAll('*').remove();
+
+    svg.append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
+      .attr('class', 'main axis date').call(xAxis);
+
+    svg.append('g')
+      .attr('class', 'main axis date').call(yAxis);
+    xScale.domain([d3.min(xAry), d3.max(xAry)]).range([0 + 10, innerWidth - 10]);
+    yScale.domain([d3.min(yAry), d3.max(yAry)]).range([innerHeight - 10, 0 + 10]);
+
+    svg.selectAll('.dot')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('r', 2)
+      .attr('cx', (d) => xScale(d[0]))
+      .attr('cy', (d) => yScale(d[1]))
+      .style('fill', 'black');
+  }, [r]);
+
+  useEffect(() => {
+    createChart();
+  }, [createChart]);
+
+  return (
+    <svg
+      className="d3-component"
+      width={300}
+      height={300}
+      ref={d3Container}
+    />
+  );
+}
