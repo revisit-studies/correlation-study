@@ -56,25 +56,10 @@
           ]
         }
       ]
-    },
-    "second-question-set": {
-      "type": "questionnaire",
-      "response": [
-        {
-          "id": "q3-satisfaction",
-          "prompt": "Rate your satisfaction with this survey from 1 (not enjoyable) to 5 (very enjoyable).",
-          "required": true,
-          "location": "aboveStimulus",
-          "type": "likert",
-          "leftLabel": "Not Enjoyable",
-          "rightLabel": "Very Enjoyable",
-          "preset": 5
-        }
-      ]
     }
   },
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "first-question-set", "second-question-set"]
+    "components": ["introduction", "first-question-set"]
   }
 }
