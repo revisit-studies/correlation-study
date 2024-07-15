@@ -4,8 +4,7 @@ import { axisLeft } from 'd3-axis';
 import { useCallback, useEffect, useRef } from 'react';
 import { select } from 'd3-selection';
 import { axisBottom } from 'd3';
-import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneration';
-import { StimulusParams } from '../../../../../../store/types';
+import { generateDataSetFixed } from '../../utils/dataGeneration';
 
 export default function ScatterPlots({ r } : { r: number}) {
   const d3Container = useRef(null);
@@ -24,8 +23,6 @@ export default function ScatterPlots({ r } : { r: number}) {
 
     const innerHeight = height - margin.bottom;
     const innerWidth = width - margin.left - margin.right;
-
-    console.log(data);
 
     const xAry = data.map((d) => d[0]);
     const yAry = data.map((d) => d[1]);
