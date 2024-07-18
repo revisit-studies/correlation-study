@@ -3,11 +3,11 @@ import { StimulusParams } from '../../../../../../store/types';
 import ScatterPlots from './ScatterPlots';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function ScatterWrapper({ parameters }: StimulusParams<{r1: number, r2: number}>) {
+function ScatterWrapper({ r1, r2 }: {r1: number; r2: number}) {
   return (
     <>
-      <ScatterPlots r={parameters.r1} />
-      <ScatterPlots r={parameters.r2} />
+      <ScatterPlots r={r1} />
+      <ScatterPlots r={r2} />
       <Text>Hello world</Text>
     </>
 

@@ -24,11 +24,10 @@
     },
     "firstScatter": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/ScatterWrapper.tsx",
+      "path": "emma-jnd/vistaJND/src/components/vis/ClickAccuracyTest.tsx",
       "parameters": {
-        "r1": 0.2,
-        "r2": 0.8
-
+        "r1": 0.7,
+        "r2": 0.4
       },
       "response": [{
         "id": "q-radio",
@@ -45,8 +44,41 @@
             "label": "Option 2",
             "value": "opt-2"
           }
-        ]
-       }]
+        ]}
+      ],
+      "correctAnswer": [{
+        "id": "response1",
+        "answer": "opt-2"
+      }]
+    },
+    "SecondScatter": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/ScatterWrapper.tsx",
+      "parameters": {
+        "r1": 0.2,
+        "r2": 0.8
+      },
+      "response": [{
+        "id": "q-radio",
+        "prompt": "Radio button example",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "radio",
+        "options": [
+          {
+            "label": "Option 1",
+            "value": "opt-1"
+          },
+          {
+            "label": "Option 2",
+            "value": "opt-2"
+          }
+        ]}
+      ],
+      "correctAnswer": [{
+        "id": "response1",
+        "answer": "opt-2"
+      }]
     }
   },
   "sequence": {

@@ -1,13 +1,15 @@
-import { Text } from '@mantine/core';
 import { StimulusParams } from '../../../../../../store/types';
-import ScatterPlots from './ScatterPlots';
+import ScatterWrapper from './ScatterWrapper';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function ScatterWrapper({ parameters }: StimulusParams<{r1: number, r2: number}>) {
+function ClickAccuracyTest() {
+  const arr1 = [0.3, 0.4, 0.5];
+  const arr2 = [0.6, 0.7, 0.8];
+  const r1 = arr1[Math.floor(Math.random() * arr1.length)];
+  const r2 = arr2[Math.floor(Math.random() * arr2.length)];
   return (
-    <ScatterWrapper />
-
+    <ScatterWrapper r1={r1} r2={r2} />
   );
 }
 
-export default ScatterWrapper;
+export default ClickAccuracyTest;
