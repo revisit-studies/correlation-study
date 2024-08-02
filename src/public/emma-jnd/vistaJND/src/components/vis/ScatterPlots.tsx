@@ -1,17 +1,21 @@
 import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
 import { axisLeft } from 'd3-axis';
-import { useCallback, useEffect, useRef } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { select } from 'd3-selection';
 import { axisBottom } from 'd3';
 import { generateDataSetFixed } from '../../utils/dataGeneration';
 
-export default function ScatterPlots({ r } : { r: number}) {
+const width = 600;
+const height = 600;
+export default function ScatterPlots({ r, onClick } : { r: number, onClick: () => void}) {
   const d3Container = useRef(null);
 
+  const [isHover, setIsHover] = useState<boolean>(false);
+
   const createChart = useCallback(() => {
-    const width = 300;
-    const height = 300;
     const data = generateDataSetFixed(r, Date.now());
     // data in format [x1,y1], [x2,y2]
     const margin = {
@@ -55,7 +59,7 @@ export default function ScatterPlots({ r } : { r: number}) {
       .enter()
       .append('circle')
       .attr('class', 'dot')
-      .attr('r', 2)
+      .attr('r', Math.sqrt(8))
       .attr('cx', (d) => xScale(d[0]))
       .attr('cy', (d) => yScale(d[1]))
       .style('fill', 'black');
@@ -68,9 +72,16 @@ export default function ScatterPlots({ r } : { r: number}) {
   return (
     <svg
       className="d3-component"
-      width={300}
-      height={300}
-      ref={d3Container}
-    />
+      width={width}
+      height={height}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+      <g
+        id="d3Stuff"
+        ref={d3Container}
+      />
+      <rect onClick={() => onClick()} x={0} y={0} width={width} height={height} cursor="pointer" opacity={isHover ? 0.2 : 0.0} fill="cornflowerblue" />
+    </svg>
   );
 }

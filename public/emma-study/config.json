@@ -24,27 +24,15 @@
     },
     "firstScatter": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/ClickAccuracyTest.tsx",
-      "parameters": {
-        "r1": 0.7,
-        "r2": 0.4
-      },
-      "response": [{
-        "id": "q-radio",
+      "path": "emma-jnd/vistaJND/src/components/vis/JND.tsx",
+      "response": [{ 
+        "id": "scatterSelections",
         "prompt": "Radio button example",
         "required": true,
         "location": "aboveStimulus",
-        "type": "radio",
-        "options": [
-          {
-            "label": "Option 1",
-            "value": "opt-1"
-          },
-          {
-            "label": "Option 2",
-            "value": "opt-2"
-          }
-        ]}
+        "type": "iframe",
+        "hidden": true
+      }
       ],
       "correctAnswer": [{
         "id": "response1",
