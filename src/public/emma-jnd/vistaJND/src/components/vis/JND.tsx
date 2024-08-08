@@ -1,15 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Center, Stack } from '@mantine/core';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Center, Stack, Text } from '@mantine/core';
 import { StimulusParams } from '../../../../../../store/types';
 import ScatterWrapper from './ScatterWrapper';
-import { RadioOptions } from './RadioOptions';
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 const startingArr2 = [0.3, 0.4, 0.5];
 const startingArr1 = [0.6, 0.7, 0.8];
 
 function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
+  const counter = useRef(0);
   const [r1, setR1] = useState(startingArr1[Math.floor(Math.random() * startingArr1.length)]);
   const [r2, setR2] = useState(startingArr2[Math.floor(Math.random() * startingArr2.length)]);
 
@@ -34,16 +38,25 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
   }, [participantSelections, r1, r2]);
 
   useEffect(() => {
-    setAnswer({
-      status: true,
-      provenanceGraph: undefined,
-      answers: { scatterSelections: participantSelections },
-    });
-  }, [participantSelections]);
+    if (counter.current === 50) {
+      setAnswer({
+        status: true,
+        provenanceGraph: undefined,
+        answers: { scatterSelections: participantSelections },
+      });
+    }
+    if (participantSelections.length > 0) {
+      counter.current += 1;
+    }
+  }, [participantSelections, setAnswer]);
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
-      {/* <RadioOptions /> */}
+      <Text>
+        {counter.current}
+        /50
+      </Text>
+      <Text style={{ textAlign: 'center' }}>Select an option</Text>
       <Center>
         <ScatterWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>

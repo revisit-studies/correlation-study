@@ -8,8 +8,8 @@ import { select } from 'd3-selection';
 import { axisBottom } from 'd3';
 import { generateDataSetFixed } from '../../utils/dataGeneration';
 
-const width = 600;
-const height = 600;
+const width = 300;
+const height = 300;
 export default function ScatterPlots({ r, onClick } : { r: number, onClick: () => void}) {
   const d3Container = useRef(null);
 
@@ -59,7 +59,8 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
       .enter()
       .append('circle')
       .attr('class', 'dot')
-      .attr('r', Math.sqrt(8))
+      // .attr('r', Math.sqrt(8))
+      .attr('r', 2)
       .attr('cx', (d) => xScale(d[0]))
       .attr('cy', (d) => yScale(d[1]))
       .style('fill', 'black');

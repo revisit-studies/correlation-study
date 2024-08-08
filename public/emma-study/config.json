@@ -22,26 +22,9 @@
       "path": "emma-study/assets/introduction.md",
       "response": []
     },
-    "firstScatter": {
+    "parallelCoordinates": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/JND.tsx",
-      "response": [{ 
-        "id": "scatterSelections",
-        "prompt": "Radio button example",
-        "required": true,
-        "location": "aboveStimulus",
-        "type": "iframe",
-        "hidden": true
-      }
-      ],
-      "correctAnswer": [{
-        "id": "response1",
-        "answer": "opt-2"
-      }]
-    },
-    "SecondScatter": {
-      "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/ScatterWrapper.tsx",
+      "path": "emma-jnd/vistaJND/src/components/vis/ParallelCoordinatesWrapper.tsx",
       "parameters": {
         "r1": 0.2,
         "r2": 0.8
@@ -67,10 +50,28 @@
         "id": "response1",
         "answer": "opt-2"
       }]
+    },
+    "firstScatter": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/JND.tsx",
+      "response": [{ 
+        "id": "scatterSelections",
+        "prompt": "Radio button example",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ],
+      "correctAnswer": [{
+        "id": "response1",
+        "answer": "opt-2"
+      }]
     }
   },
+  
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "firstScatter"]
+    "components": ["introduction", "parallelCoordinates", "firstScatter"]
   }
 }

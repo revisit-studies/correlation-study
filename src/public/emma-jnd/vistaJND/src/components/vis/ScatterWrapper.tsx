@@ -1,10 +1,9 @@
-import { Group, Text } from '@mantine/core';
+import { Group } from '@mantine/core';
 import { useMemo } from 'react';
-import { StimulusParams } from '../../../../../../store/types';
 import ScatterPlots from './ScatterPlots';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: number, onClick: (n: number) => void}) {
+export default function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: number, onClick: (n: number) => void}) {
   const higherFirst = useMemo(() => Math.random() > 0.5, [r1, r2]);
 
   return higherFirst ? (
@@ -19,5 +18,3 @@ function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: number, onClick: (
     </Group>
   );
 }
-
-export default ScatterWrapper;
