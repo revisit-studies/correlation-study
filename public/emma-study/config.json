@@ -22,36 +22,24 @@
       "path": "emma-study/assets/introduction.md",
       "response": []
     },
-    "parallelCoordinates": {
+    "testVis": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/ParallelCoordinatesWrapper.tsx",
+      "path": "emma-jnd/vistaJND/src/components/vis/TestVis.tsx",
       "parameters": {
         "r1": 0.2,
         "r2": 0.8
       },
-      "response": [{
-        "id": "q-radio",
+      "response": [{ 
+        "id": "scatterSelections",
         "prompt": "Radio button example",
         "required": true,
         "location": "aboveStimulus",
-        "type": "radio",
-        "options": [
-          {
-            "label": "Option 1",
-            "value": "opt-1"
-          },
-          {
-            "label": "Option 2",
-            "value": "opt-2"
-          }
-        ]}
-      ],
-      "correctAnswer": [{
-        "id": "response1",
-        "answer": "opt-2"
-      }]
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
     },
-    "firstScatter": {
+    "scatterPlot": {
       "type": "react-component",
       "path": "emma-jnd/vistaJND/src/components/vis/JND.tsx",
       "response": [{ 
@@ -62,16 +50,12 @@
         "type": "iframe",
         "hidden": true
       }
-      ],
-      "correctAnswer": [{
-        "id": "response1",
-        "answer": "opt-2"
-      }]
+      ]
     }
   },
   
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "parallelCoordinates", "firstScatter"]
+    "components": ["introduction", "testVis", "scatterPlot"]
   }
 }
