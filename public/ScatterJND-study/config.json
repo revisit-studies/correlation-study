@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/reVISit-studies/study/main/src/parser/StudyConfigSchema.json",
+  "studyMetadata": {
+    "title": "Scatter Plot JND Study",
+    "version": "pilot",
+    "authors": ["The reVISit Team"],
+    "date": "2024-06-26",
+    "description": "This is a revist variation study of JND(Just Noticible Difference) Scatter Plot experiment.",
+    "organizations": ["University of Utah", "WPI", "University of Toronto"]
+  },
+  "uiConfig": {
+    "contactEmail": "contact@revisit.dev",
+    "helpTextPath": "ScatterJND-study/assets/help.md",
+    "logoPath": "revisitAssets/revisitLogoSquare.svg",
+    "withProgressBar": true,
+    "autoDownloadStudy": false,
+    "sidebar": true
+  },
+  "components": {
+    "introduction": {
+      "type": "markdown",
+      "path": "ScatterJND-study/assets/introduction.md",
+      "response": []
+    },
+    "training": {
+      "type": "markdown",
+      "path": "ScatterJND-study/assets/training.md",
+      "response": []
+    },
+    "scatterPlot": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatter.tsx",
+      "response": [{ 
+        "id": "scatterSelections",
+        "prompt": "Select an option",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    }
+  },
+  "sequence": {
+    "order": "fixed",
+    "components": ["introduction", "training", "scatterPlot"]
+  }
+}

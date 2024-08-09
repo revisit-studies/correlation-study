@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import { Center, Stack, Text } from '@mantine/core';
@@ -13,7 +12,7 @@ const startingArr2 = [0.3, 0.4, 0.5];
 const startingArr1 = [0.6, 0.7, 0.8];
 
 function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
-  const counter = useRef(0);
+  const [counter, setCounter] = useState(0);
   const [r1, setR1] = useState(startingArr1[Math.floor(Math.random() * startingArr1.length)]);
   const [r2, setR2] = useState(startingArr2[Math.floor(Math.random() * startingArr2.length)]);
 
@@ -21,6 +20,7 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
 
   const onClick = useCallback((n: number) => {
     setParticipantSelections([...participantSelections, { r1, r2, correct: n === 1 }]);
+    setCounter(counter + 1);
 
     const flip = Math.random() > 0.5;
     // is correct
@@ -35,25 +35,22 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
     } else {
       setR1(Math.max(r1 + 0.03, 0));
     }
-  }, [participantSelections, r1, r2]);
+  }, [counter, participantSelections, r1, r2]);
 
   useEffect(() => {
-    if (counter.current === 50) {
+    if (counter === 50) {
       setAnswer({
         status: true,
         provenanceGraph: undefined,
         answers: { scatterSelections: participantSelections },
       });
     }
-    if (participantSelections.length > 0) {
-      counter.current += 1;
-    }
-  }, [participantSelections, setAnswer]);
+  }, [counter, participantSelections]);
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
       <Text>
-        {counter.current}
+        {counter}
         /50
       </Text>
       <Text style={{ textAlign: 'center' }}>Select an option</Text>

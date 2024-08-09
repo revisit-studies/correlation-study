@@ -1,16 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/reVISit-studies/study/main/src/parser/StudyConfigSchema.json",
   "studyMetadata": {
-    "title": "Basic Questionnaire Study",
+    "title": "Parallel Coordinates JND Study",
     "version": "pilot",
     "authors": ["The reVISit Team"],
     "date": "2024-06-26",
-    "description": "A simple questionnaire study",
+    "description": "This is a revist variation study of JND(Just Noticible Difference) Parallel Coordinates Plot experiment.",
     "organizations": ["University of Utah", "WPI", "University of Toronto"]
   },
   "uiConfig": {
     "contactEmail": "contact@revisit.dev",
-    "helpTextPath": "emma-study/assets/help.md",
+    "helpTextPath": "ParallelJND-study/assets/help.md",
     "logoPath": "revisitAssets/revisitLogoSquare.svg",
     "withProgressBar": true,
     "autoDownloadStudy": false,
@@ -19,32 +19,20 @@
   "components": {
     "introduction": {
       "type": "markdown",
-      "path": "emma-study/assets/introduction.md",
+      "path": "ParallelJND-study/assets/introduction.md",
       "response": []
     },
-    "testVis": {
-      "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/TestVis.tsx",
-      "parameters": {
-        "r1": 0.2,
-        "r2": 0.8
-      },
-      "response": [{ 
-        "id": "scatterSelections",
-        "prompt": "Radio button example",
-        "required": true,
-        "location": "aboveStimulus",
-        "type": "iframe",
-        "hidden": true
-      }
-      ]
+    "training": {
+      "type": "markdown",
+      "path": "ParallelJND-study/assets/training.md",
+      "response": []
     },
-    "scatterPlot": {
+    "parallelCoordinates": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/JND.tsx",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDParallel.tsx",
       "response": [{ 
-        "id": "scatterSelections",
-        "prompt": "Radio button example",
+        "id": "coordinateSelections",
+        "prompt": "Select an option",
         "required": true,
         "location": "aboveStimulus",
         "type": "iframe",
@@ -53,9 +41,8 @@
       ]
     }
   },
-  
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "testVis", "scatterPlot"]
+    "components": ["introduction", "training", "parallelCoordinates"]
   }
 }

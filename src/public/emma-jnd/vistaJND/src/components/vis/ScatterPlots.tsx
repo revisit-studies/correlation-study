@@ -10,6 +10,7 @@ import { generateDataSetFixed } from '../../utils/dataGeneration';
 
 const width = 300;
 const height = 300;
+
 export default function ScatterPlots({ r, onClick } : { r: number, onClick: () => void}) {
   const d3Container = useRef(null);
 
@@ -34,7 +35,7 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
     const yScale = scaleLinear().range([innerHeight, 0]);
     const xAxis = axisBottom(xScale)
       .tickSize(0)
-      .tickFormat((d) => '');
+      .tickFormat(() => '');
 
     const yAxis = axisLeft(yScale)
       .tickSize(0);

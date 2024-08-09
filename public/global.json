@@ -1,11 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.0/src/parser/GlobalConfigSchema.json",
   "configsList": [
-    "emma-study"
+    "ScatterJND-study",
+    "ParallelJND-study"
   ],
   "configs": {
-    "emma-study": {
-      "path": "emma-study/config.json"
+    "ScatterJND-study": {
+      "path": "ScatterJND-study/config.json"
+    },
+    "ParallelJND-study": {
+      "path": "ParallelJND-study/config.json"
     }
   }
 }

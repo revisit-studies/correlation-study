@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import ParallelCoordinates from './ParallelCoordinates';
 
