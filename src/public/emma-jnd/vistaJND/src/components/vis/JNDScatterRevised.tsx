@@ -5,16 +5,20 @@ import {
 } from 'react';
 import { Center, Stack, Text } from '@mantine/core';
 import { StimulusParams } from '../../../../../../store/types';
-import ParallelCoordinatesWrapper from './ParallelCoordinatesWrapper';
+import ScatterWrapper from './ScatterWrapper';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 const startingArr2 = [0.3, 0.4, 0.5];
 const startingArr1 = [0.6, 0.7, 0.8];
 
+const startingArr = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+
 function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
+  const index = Math.floor(Math.random() * startingArr.length);
   const [counter, setCounter] = useState(0);
-  const [r1, setR1] = useState(startingArr1[Math.floor(Math.random() * startingArr1.length)]);
-  const [r2, setR2] = useState(startingArr2[Math.floor(Math.random() * startingArr2.length)]);
+  const [r1, setR1] = useState(startingArr[index]);
+  startingArr.splice(index, 1);
+  const [r2, setR2] = useState(startingArr[Math.floor(Math.random() * startingArr.length)]);
 
   const [participantSelections, setParticipantSelections] = useState<{r1: number, r2: number, correct: boolean}[]>([]);
 
@@ -55,7 +59,7 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
       </Text>
       <Text style={{ textAlign: 'center' }}>Select an option</Text>
       <Center>
-        <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
+        <ScatterWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>
     </Stack>
   );

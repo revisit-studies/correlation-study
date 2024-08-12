@@ -1,4 +1,4 @@
-import { Group } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import ScatterPlots from './ScatterPlots';
 
@@ -9,12 +9,17 @@ export default function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: num
   return higherFirst ? (
     <Group>
       <ScatterPlots onClick={() => onClick(1)} r={r1} />
+      {/* <Text>{r1}</Text> */}
       <ScatterPlots onClick={() => onClick(2)} r={r2} />
+      {/* <Text>{r2}</Text> */}
     </Group>
   ) : (
     <Group>
       <ScatterPlots onClick={() => onClick(2)} r={r2} />
+      {/* <Text>{r2}</Text> */}
       <ScatterPlots onClick={() => onClick(1)} r={r1} />
+      {/* <Text>{r1}</Text> */}
+
     </Group>
   );
 }

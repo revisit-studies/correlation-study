@@ -4,61 +4,68 @@ import {
   useState,
 } from 'react';
 import { Center, Stack, Text } from '@mantine/core';
-import { StimulusParams } from '../../../../../../store/types';
 import ScatterWrapper from './ScatterWrapper';
+import { StimulusParams } from '../../../../../../store/types';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-const startingArr2 = [0.3, 0.4, 0.5];
-const startingArr1 = [0.6, 0.7, 0.8];
+const lowArr = [0.1, 0.2, 0.3, 0.4, 0.5];
+const highArr = [0.6, 0.7, 0.8, 0.9, 1.0];
 
-function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
+export default function PracticeScatter({ setAnswer } : StimulusParams<Record<string, never>>) {
   const [counter, setCounter] = useState(0);
-  const [r1, setR1] = useState(startingArr1[Math.floor(Math.random() * startingArr1.length)]);
-  const [r2, setR2] = useState(startingArr2[Math.floor(Math.random() * startingArr2.length)]);
+  const [r1, setR1] = useState(highArr[Math.floor(Math.random() * highArr.length)]);
+  const [r2, setR2] = useState(highArr[Math.floor(Math.random() * highArr.length)]);
+  const [result, setResult] = useState('');
 
-  const [participantSelections, setParticipantSelections] = useState<{r1: number, r2: number, correct: boolean}[]>([]);
+  const setRValue = (arr: number[]) => {
+    setR1(arr[Math.floor(Math.random() * arr.length)]);
+    setR2(arr[Math.floor(Math.random() * arr.length)]);
+  };
 
   const onClick = useCallback((n: number) => {
-    setParticipantSelections([...participantSelections, { r1, r2, correct: n === 1 }]);
     setCounter(counter + 1);
 
-    const flip = Math.random() > 0.5;
-    // is correct
-    if (n === 1) {
-      if (flip) {
-        setR2(Math.min(r2 + 0.01, 1));
-      } else {
-        setR1(Math.min(r1 - 0.01, 1));
-      }
-    } else if (flip) {
-      setR2(Math.max(r2 - 0.03, 0));
+    if ((n === 1 && r1 > r2) || (n === 2 && r2 > r1)) {
+      setResult('Correct');
     } else {
-      setR1(Math.max(r1 + 0.03, 0));
+      setResult('Incorrect');
     }
-  }, [counter, participantSelections, r1, r2]);
+    if (counter < 10) {
+      setRValue(highArr);
+    } else {
+      setRValue(lowArr);
+    }
+  }, [counter, r1, r2]);
 
   useEffect(() => {
-    if (counter === 50) {
+    if (r1 === r2) {
+      if (counter < 10) {
+        setRValue(highArr);
+      } else {
+        setRValue(lowArr);
+      }
+    }
+    if (counter === 20) {
       setAnswer({
         status: true,
         provenanceGraph: undefined,
-        answers: { scatterSelections: participantSelections },
+        answers: { completed: true },
       });
+      setResult('Practice Completed, please continue.');
     }
-  }, [counter, participantSelections]);
+  }, [counter]);
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
       <Text>
         {counter}
-        /50
+        /20
       </Text>
       <Text style={{ textAlign: 'center' }}>Select an option</Text>
       <Center>
         <ScatterWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>
+      <Text style={{ textAlign: 'center' }}>{result}</Text>
     </Stack>
   );
 }
-
-export default JND;

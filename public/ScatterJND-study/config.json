@@ -27,9 +27,22 @@
       "path": "ScatterJND-study/assets/training.md",
       "response": []
     },
+    "practice": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/PracticeScatter.tsx",
+      "response": [{ 
+        "id": "completed",
+        "prompt": "Did you complete the practice?",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    },
     "scatterPlot": {
       "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatter.tsx",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatterRevised.tsx",
       "response": [{ 
         "id": "scatterSelections",
         "prompt": "Select an option",
@@ -43,6 +56,6 @@
   },
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "training", "scatterPlot"]
+    "components": ["introduction", "training", "practice", "scatterPlot"]
   }
 }
