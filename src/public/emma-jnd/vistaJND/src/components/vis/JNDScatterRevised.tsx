@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import {
   useCallback,
   useEffect,
@@ -8,17 +9,38 @@ import { StimulusParams } from '../../../../../../store/types';
 import ScatterWrapper from './ScatterWrapper';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-const startingArr2 = [0.3, 0.4, 0.5];
-const startingArr1 = [0.6, 0.7, 0.8];
-
 const startingArr = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 
 function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
-  const index = Math.floor(Math.random() * startingArr.length);
   const [counter, setCounter] = useState(0);
-  const [r1, setR1] = useState(startingArr[index]);
-  startingArr.splice(index, 1);
-  const [r2, setR2] = useState(startingArr[Math.floor(Math.random() * startingArr.length)]);
+
+  const [r1, setR1] = useState(() => {
+    const index = Math.floor(Math.random() * startingArr.length);
+    return startingArr[index];
+  });
+
+  const [r2, setR2] = useState(() => {
+    let aboveArr = [] as number[];
+    let belowArr = [] as number[];
+    const index = startingArr.indexOf(r1);
+
+    if (index >= 0) {
+      let above = Math.random() > 0.5;
+      if (r1 === 0.9) {
+        above = false;
+      } else if (r1 === 0.1) {
+        above = true;
+      }
+
+      if (above) {
+        aboveArr = startingArr.slice(index + 1);
+        return aboveArr[Math.floor(Math.random() * aboveArr.length)];
+      }
+      belowArr = startingArr.slice(0, index);
+      return belowArr[Math.floor(Math.random() * belowArr.length)];
+    }
+    return r1; // Fallback if r1 not found in startingArr
+  });
 
   const [participantSelections, setParticipantSelections] = useState<{r1: number, r2: number, correct: boolean}[]>([]);
 
