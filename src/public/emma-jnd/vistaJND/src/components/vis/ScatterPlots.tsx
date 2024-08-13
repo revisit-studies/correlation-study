@@ -83,7 +83,16 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
         id="d3Stuff"
         ref={d3Container}
       />
-      <rect onClick={() => onClick()} x={0} y={0} width={width} height={height} cursor="pointer" opacity={isHover ? 0.2 : 0.0} fill="cornflowerblue" />
+      <rect
+        onClick={onClick}
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        cursor="pointer"
+        opacity={isHover ? 0.2 : 0.0}
+        fill="cornflowerblue"
+      />
     </svg>
   );
 }
