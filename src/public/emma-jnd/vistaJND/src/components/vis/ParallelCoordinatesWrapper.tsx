@@ -9,7 +9,8 @@ export default function WindflowWrapper({ r1, r2, onClick }: {r1: number; r2: nu
   const [key, setKey] = useState<number>(0);
 
   const handleReset = () => {
-    setKey((prevKey) => prevKey + 1); // Increment key to trigger re-render
+    // Increment key to trigger re-render
+    setKey((prevKey) => prevKey + 1);
   };
 
   const handleClick = (n: number) => {
