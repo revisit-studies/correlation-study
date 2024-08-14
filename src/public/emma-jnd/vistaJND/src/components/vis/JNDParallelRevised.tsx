@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { Center, Stack, Text } from '@mantine/core';
 import { StimulusParams } from '../../../../../../store/types';
-import ScatterWrapper from './ScatterWrapper';
+import ParallelCoordinatesWrapper from './ParallelCoordinatesWrapper';
 
 const vals = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
 
@@ -131,14 +131,23 @@ export default function JND({ setAnswer } : StimulusParams<Record<string, never>
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
       <Text>
-        {`current r1: ${r1} current r2: ${r2}`}
+        current r1:
+        {' '}
+        {r1}
+        {' '}
+        current r2:
+        {' '}
+        {r2}
       </Text>
       <Text>
-        {`Trials left: ${completed}/16`}
+        Trials left:
+        {' '}
+        {completed}
+        /16
       </Text>
       <Text style={{ textAlign: 'center' }}>Select an option</Text>
       <Center>
-        <ScatterWrapper onClick={onClick} r1={r1} r2={r2} />
+        <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>
       <progress value={counter} max={50} />
     </Stack>

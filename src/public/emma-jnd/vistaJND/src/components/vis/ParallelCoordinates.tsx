@@ -1,20 +1,21 @@
 import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
 import { axisLeft } from 'd3-axis';
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { select } from 'd3-selection';
 import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneration';
 
 const width = 300;
 const height = 300;
+
 export default function ParallelCoordinates({ v, onClick } : { v: number, onClick: () => void}) {
   const d3Container = useRef(null);
 
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  const createChart = () => {
-    // console.log(v, 'v');
-
+  const createChart = useCallback(() => {
     const data = generateDataSetFixed(v, Date.now());
     // data in format [x1,y1], [x2,y2]
     const margin = {
@@ -73,11 +74,12 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
       .attr('y1', (d) => leftScale(d[0]) + margin.top)
       .attr('x2', margin.left + innerWidth)
       .attr('y2', (d) => rightScale(d[1]) + margin.top);
-  };
+  }, [v]);
 
   useEffect(() => {
     createChart();
-  }, [v]);
+  }, [createChart]);
+
   return (
     <svg
       className="d3-component"
@@ -90,7 +92,16 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
         id="d3Stuff"
         ref={d3Container}
       />
-      <rect onClick={() => onClick()} x={0} y={0} width={width} height={height} cursor="pointer" opacity={isHover ? 0.2 : 0.0} fill="cornflowerblue" />
+      <rect
+        onClick={onClick}
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        cursor="pointer"
+        opacity={isHover ? 0.2 : 0.0}
+        fill="cornflowerblue"
+      />
     </svg>
   );
 }

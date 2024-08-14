@@ -40,7 +40,20 @@
       }
       ]
     },
-    "scatterPlot": {
+    "experiment": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatter.tsx",
+      "response": [{ 
+        "id": "scatterSelections",
+        "prompt": "Select an option",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    },
+    "experimentRevised": {
       "type": "react-component",
       "path": "emma-jnd/vistaJND/src/components/vis/JNDScatterRevised.tsx",
       "response": [{ 
@@ -56,6 +69,6 @@
   },
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "training", "practice", "scatterPlot"]
+    "components": ["introduction", "training", "practice", "experiment", "experimentRevised"]
   }
 }

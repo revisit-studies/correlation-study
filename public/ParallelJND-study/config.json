@@ -27,9 +27,22 @@
       "path": "ParallelJND-study/assets/training.md",
       "response": []
     },
-    "parallelCoordinates": {
+    "experiment": {
       "type": "react-component",
       "path": "emma-jnd/vistaJND/src/components/vis/JNDParallel.tsx",
+      "response": [{ 
+        "id": "coordinateSelections",
+        "prompt": "Select an option",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    },
+    "experimentRevised": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDParallelRevised.tsx",
       "response": [{ 
         "id": "coordinateSelections",
         "prompt": "Select an option",
@@ -43,6 +56,6 @@
   },
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "training", "parallelCoordinates"]
+    "components": ["introduction", "training", "experiment", "experimentRevised"]
   }
 }
