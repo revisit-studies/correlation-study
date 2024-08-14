@@ -16,6 +16,21 @@
     "autoDownloadStudy": false,
     "sidebar": true
   },
+  "baseComponents": {
+    "experimentRevised": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatterRevised.tsx",
+      "response": [{ 
+        "id": "scatterSelections",
+        "prompt": "Select an option",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    }
+  },
   "components": {
     "introduction": {
       "type": "markdown",
@@ -53,22 +68,163 @@
       }
       ]
     },
-    "experimentRevised": {
-      "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/JNDScatterRevised.tsx",
-      "response": [{ 
-        "id": "scatterSelections",
-        "prompt": "Select an option",
-        "required": true,
-        "location": "aboveStimulus",
-        "type": "iframe",
-        "hidden": true
+    "trial1": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.1,
+        "r2": 0.6,
+        "above": true
       }
-      ]
+    },
+    "trial2": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.2,
+        "r2": 0.7,
+        "above": true
+      }
+    },
+    "trial3": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.2,
+        "r2": 0.1,
+        "above": false
+      }
+    },
+    "trial4": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.3,
+        "r2": 0.8,
+        "above": true
+      }
+    },
+    "trial5": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.3,
+        "r2": 0.1,
+        "above": false
+      }
+    },
+    "trial6": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.4,
+        "r2": 0.9,
+        "above": true
+      }
+    },
+    "trial7": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.4,
+        "r2": 0.2,
+        "above": false
+      }
+    },
+    "trial8": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.5,
+        "r2": 0.7,
+        "above": true
+      }
+    },
+    "trial9": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.5,
+        "r2": 0.3,
+        "above": false
+      }
+    },
+    "trial10": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.6,
+        "r2": 0.7,
+        "above": true
+      }
+    },
+    "trial11": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.6,
+        "r2": 0.4,
+        "above": false
+      }
+    },
+    "trial12": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.7,
+        "r2": 0.9,
+        "above": true
+      }
+    },
+    "trial13": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.7,
+        "r2": 0.5,
+        "above": false
+      }
+    },
+    "trial14": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.8,
+        "r2": 0.9,
+        "above": true
+      }
+    },
+    "trial15": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.8,
+        "r2": 0.4,
+        "above": false
+      }
+    },
+    "trial16": {
+      "baseComponent": "experimentRevised",
+      "parameters": {
+        "r1": 0.9,
+        "r2": 0.7,
+        "above": false
+      }
     }
   },
   "sequence": {
     "order": "fixed",
-    "components": ["introduction", "training", "practice", "experiment", "experimentRevised"]
+    "components": [
+      "introduction",
+      "training",
+      "practice",
+      "experiment",
+      {
+        "order": "random",
+        "components": [
+          "trial1",
+          "trial2",
+          "trial3",
+          "trial4",
+          "trial5",
+          "trial6",
+          "trial7",
+          "trial8",
+          "trial9",
+          "trial10",
+          "trial11",
+          "trial12",
+          "trial13",
+          "trial14",
+          "trial15",
+          "trial16"
+        ]
+      }
+    ]
   }
 }
