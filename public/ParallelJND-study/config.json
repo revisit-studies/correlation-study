@@ -57,18 +57,10 @@
       }
       ]
     },
-    "experiment": {
-      "type": "react-component",
-      "path": "emma-jnd/vistaJND/src/components/vis/JNDParallel.tsx",
-      "response": [{ 
-        "id": "parallelSelections",
-        "prompt": "Select an option",
-        "required": true,
-        "location": "aboveStimulus",
-        "type": "iframe",
-        "hidden": true
-      }
-      ]
+    "begin": {
+      "type": "markdown",
+      "path": "ParallelJND-study/assets/begin.md",
+      "response": []
     },
     "trial1": {
       "baseComponent": "experimentRevised",
@@ -205,7 +197,7 @@
       "introduction",
       "training",
       "practice",
-      "experiment",
+      "begin",
       {
         "order": "random",
         "components": [
