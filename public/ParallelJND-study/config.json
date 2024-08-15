@@ -44,6 +44,19 @@
       "path": "ParallelJND-study/assets/training.md",
       "response": []
     },
+    "practice": {
+      "type": "react-component",
+      "path": "emma-jnd/vistaJND/src/components/vis/PracticeParallel.tsx",
+      "response": [{ 
+        "id": "completed",
+        "prompt": "Did you complete the practice?",
+        "required": true,
+        "location": "aboveStimulus",
+        "type": "iframe",
+        "hidden": true
+      }
+      ]
+    },
     "experiment": {
       "type": "react-component",
       "path": "emma-jnd/vistaJND/src/components/vis/JNDParallel.tsx",
@@ -191,6 +204,7 @@
     "components": [
       "introduction",
       "training",
+      "practice",
       "experiment",
       {
         "order": "random",

@@ -96,7 +96,9 @@ export default function JND({ setAnswer, parameters } : StimulusParams<{r1: numb
       <Center>
         <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>
-      <progress value={counter} max={50} />
+      <Center style={{ marginTop: 20 }}>
+        <progress value={counter} max={50} />
+      </Center>
     </Stack>
   );
 }
