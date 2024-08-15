@@ -14,7 +14,9 @@
     "logoPath": "revisitAssets/revisitLogoSquare.svg",
     "withProgressBar": true,
     "autoDownloadStudy": false,
-    "sidebar": true
+    "sidebar": true,
+    "urlParticipantIdParam": "PROLIFIC_PID",
+    "studyEndMsg": "**Thank you for completing the study. You may click this link and return to Prolific**: [yourProlificLink](yourProlificLink)"
   },
   "baseComponents": {
     "experimentRevised": {
@@ -35,7 +37,17 @@
     "introduction": {
       "type": "markdown",
       "path": "ScatterJND-study/assets/introduction.md",
-      "response": []
+      "response": [
+        {
+            "id": "prolificId",
+            "prompt": "Please enter your Prolific ID",
+            "required": true,
+            "location": "belowStimulus",
+            "type": "shortText",
+            "placeholder": "Prolific ID",
+            "paramCapture": "PROLIFIC_PID"
+        }
+      ]
     },
     "training": {
       "type": "markdown",

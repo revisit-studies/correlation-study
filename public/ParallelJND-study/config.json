@@ -37,7 +37,17 @@
     "introduction": {
       "type": "markdown",
       "path": "ParallelJND-study/assets/introduction.md",
-      "response": []
+      "response": [
+        {
+            "id": "prolificId",
+            "prompt": "Please enter your Prolific ID",
+            "required": true,
+            "location": "belowStimulus",
+            "type": "shortText",
+            "placeholder": "Prolific ID",
+            "paramCapture": "PROLIFIC_PID"
+        }
+      ]
     },
     "training": {
       "type": "markdown",
