@@ -1,3 +1,15 @@
+/**
+ * Authors: The ReVISit team
+ * Description:
+ *    This file is the base component for the Parallel Coordinate plot trials written in the config.json
+ * Possible next steps:
+ *    regarding the paper,
+ *    https://classes.engineering.wustl.edu/cse557/spring2017/readings/ranking-correlations.pdf,
+ *    add an F-test after 24 user selections, "the 24 user judgments are divided into 3 subgroups,
+ *    and convergence is reached when there is no significant difference between these three
+ *    subgroups".
+ */
+
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-plusplus */
 import {
@@ -9,6 +21,17 @@ import { Center, Stack, Text } from '@mantine/core';
 import { StimulusParams } from '../../../../../../store/types';
 import ParallelCoordinatesWrapper from './ParallelCoordinatesWrapper';
 
+/**
+ * Displays user's experiemnt. (This includes 2 scatter plots and a progress bar).
+ * Once completed (after 50 selections or the graphs converge) it nofifys the user
+ * to continue on.
+ * @param param0 - setAnswer is a function that fills the response, parameters are
+ * r1 (base correlation value, does not change), r2 (other correlation value, does change
+ * depending on the user's actions), above (a boolean determining whether it is an above or
+ * below experiment)
+ * @returns 2 scatter plots and a progress bar during the experiment or a message of completion
+ * of the trial
+ */
 export default function JND({ setAnswer, parameters } : StimulusParams<{r1: number, r2:number, above: boolean}>) {
   const [counter, setCounter] = useState(0);
   const [above, setAbove] = useState(parameters.above);
@@ -69,9 +92,6 @@ export default function JND({ setAnswer, parameters } : StimulusParams<{r1: numb
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
-      <Text>
-        {`current r1: ${r1} current r2: ${r2}`}
-      </Text>
       <Text style={{ textAlign: 'center' }}>Select an option</Text>
       <Center>
         <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
