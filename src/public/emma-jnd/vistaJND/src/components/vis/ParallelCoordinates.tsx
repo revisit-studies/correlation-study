@@ -1,3 +1,10 @@
+/**
+ * Authors: WPI Data Visualization Team
+ * Modified by: The ReVISit Team
+ * Description:
+ *    This file contains the functionality to create a Parallel Coordinates Plot.
+ */
+
 import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
 import { axisLeft } from 'd3-axis';
@@ -5,7 +12,7 @@ import {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import { select } from 'd3-selection';
-import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneration';
+import { generateDataSetFixed } from '../../utils/dataGeneration';
 
 const width = 300;
 const height = 300;

@@ -1,3 +1,10 @@
+/**
+ * Authors: WPI Data Visualization Team
+ * Modified by: The ReVISit Team
+ * Description:
+ *    This file contains the functionality to create a Scatter Plot.
+ */
+
 import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
 import { axisLeft } from 'd3-axis';
