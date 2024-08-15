@@ -1,8 +1,20 @@
-import { Group, Text } from '@mantine/core';
+/**
+ * Authors: The ReVISit team
+ * Description:
+ *    This file is the wrapper component for the Scatter plots
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { Group } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import ScatterPlots from './ScatterPlots';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/**
+ * Holds 2 Scatter Plots
+ * @param param0 - r1 is the correlation value for 1, r2 is the correlation value for 2,
+ * onClick is a function that determines the functionality when a graph is clicked.
+ * @returns 2 Scatter Plots
+ */
 export default function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: number, onClick: (n: number) => void}) {
   const higherFirst = useMemo(() => Math.random() > 0.5, [r1, r2]);
 
@@ -21,17 +33,12 @@ export default function ScatterWrapper({ r1, r2, onClick }: {r1: number; r2: num
   return higherFirst ? (
     <Group>
       <ScatterPlots key={key} onClick={() => handleClick(1)} r={r1} />
-      <Text>{r1}</Text>
       <ScatterPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
-      <Text>{r2}</Text>
     </Group>
   ) : (
     <Group>
       <ScatterPlots key={key} onClick={() => handleClick(2)} r={r2} />
-      <Text>{r2}</Text>
       <ScatterPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
-      <Text>{r1}</Text>
-
     </Group>
   );
 }
