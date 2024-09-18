@@ -59,8 +59,8 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
 
     svg.append('g')
       .attr('class', 'main axis date').call(yAxis);
-    xScale.domain([d3.min(xAry), d3.max(xAry)]).range([0 + 10, innerWidth - 10]);
-    yScale.domain([d3.min(yAry), d3.max(yAry)]).range([innerHeight - 10, 0 + 10]);
+    xScale.domain([d3.min(xAry)!, d3.max(xAry)!]).range([0 + 10, innerWidth - 10]);
+    yScale.domain([d3.min(yAry)!, d3.max(yAry)!]).range([innerHeight - 10, 0 + 10]);
 
     svg.selectAll('.dot')
       .data(data)

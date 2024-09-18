@@ -45,8 +45,8 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
     const rightScale = scaleLinear().range([0, innerHeight]);
 
     // domain
-    leftScale.domain([d3.min(leftAry), d3.max(leftAry)]).range([0, innerHeight]);
-    rightScale.domain([d3.min(rightAry), d3.max(rightAry)]).range([0, innerHeight]);
+    leftScale.domain([d3.min(leftAry)!, d3.max(leftAry)!]).range([0, innerHeight]);
+    rightScale.domain([d3.min(rightAry)!, d3.max(rightAry)!]).range([0, innerHeight]);
 
     // axis
     const leftAxis = axisLeft(leftScale).tickSize(0).tickValues([]);
@@ -54,7 +54,7 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
     const leftAxisTransform = `translate(${margin.left},${margin.top})`;
     const rightAxisTransform = `translate(${margin.left + innerWidth},${margin.top})`;
 
-    const addAxistoChart = (chart, selector, axis, customClass, transform) => {
+    const addAxistoChart = (chart: d3.Selection<null, unknown, null, undefined>, selector: string, axis: d3.Axis<d3.NumberValue>, customClass: string, transform: string) => {
       chart.selectAll(selector)
         .data([0]).enter()
         .append('g')
@@ -64,6 +64,7 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
         .remove();
       chart.selectAll(selector)
         .attr('transform', transform)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         .call(axis);
     };
     // add Axis to chart

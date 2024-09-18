@@ -10,7 +10,7 @@ import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneratio
 export default function Windflow({ v } : { v: number }) {
   const d3Container = useRef(null);
 
-  const generateDashArray = (speed, baseLen, baseInterval) => {
+  const generateDashArray = (speed: number, baseLen: number, baseInterval: number) => {
     const dasharrs = [];
     for (let i = 0; i < speed; i++) {
       let dasharr = '';
@@ -75,7 +75,7 @@ export default function Windflow({ v } : { v: number }) {
     /// ////////////////////////////////////////////////////
 
     for (let i = 0; i < density; i++) {
-      const offsetArray = [];
+      const offsetArray: number[] = [];
 
       const Y = initY + gap * i;
       const linePath = d3.line()([[0, Y], [300, Y]]);
@@ -100,7 +100,7 @@ export default function Windflow({ v } : { v: number }) {
         })
         .attr('opacity', opacity);
 
-      const curveanimate = (selection) => {
+      const curveanimate = (selection: d3.Selection<SVGPathElement, unknown, null, undefined>) => {
         const offarray = offsetArray;
         selection
           .transition()
