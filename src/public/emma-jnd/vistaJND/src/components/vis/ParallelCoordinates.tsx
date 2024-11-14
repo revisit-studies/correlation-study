@@ -23,7 +23,7 @@ export default function ParallelCoordinates({ v, onClick } : { v: number, onClic
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const createChart = useCallback(() => {
-    const data = generateDataSetFixed(v, Date.now());
+    const data = generateDataSetFixed(v, Date.now().toString());
     // data in format [x1,y1], [x2,y2]
     const margin = {
       left: 40,

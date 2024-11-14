@@ -24,7 +24,7 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const createChart = useCallback(() => {
-    const data = generateDataSetFixed(r, Date.now());
+    const data = generateDataSetFixed(r, Date.now().toString());
     // data in format [x1,y1], [x2,y2]
     const margin = {
       left: 40,
