@@ -8,7 +8,7 @@ const rng = seedrandom('thisisjndexperimentseed');
 const twoPi = 2.0 * 3.14159265358979323846;
 const dataSize = 100;
 
-export function shuffle(array) {
+export function shuffle<T>(array: T[]) {
   let currentIndex = array.length; let
     randomIndex;
 
@@ -26,13 +26,13 @@ export function shuffle(array) {
   return array;
 }
 
-function getSTDNormalDistriNumberFixed(randomNumber) {
+function getSTDNormalDistriNumberFixed(randomNumber: () => number) {
   const u1 = randomNumber();
   const u2 = randomNumber();
   // console.log(u1)
   // console.log(u2)
   // Box-Muller
-  const z0 = math.sqrt(-2 * math.log(u1)) * math.cos(twoPi * u2);
+  const z0 = Math.sqrt(-2 * Number(math.log(Number(u1)))) * Math.cos(twoPi * u2);
   return z0 * sigma + mu;
 }
 
@@ -42,16 +42,16 @@ function getSTDNormalDistriNumber() {
   // console.log(u1)
   // console.log(u2)
   // Box-Muller
-  const z0 = math.sqrt(-2 * math.log(u1)) * math.cos(twoPi * u2);
+  const z0 = Math.sqrt(-2 * Number(math.log(Number(u1)))) * Math.cos(twoPi * u2);
   return z0 * sigma + mu;
 }
 
-function getCorrelation(xAry, yAry) {
+function getCorrelation(xAry: number[], yAry: number[]) {
   if (xAry.length === yAry.length) {
     const xMean = math.mean(xAry);
     const yMean = math.mean(yAry);
-    const xSTD = math.std(xAry);
-    const ySTD = math.std(yAry);
+    const xSTD = Number(math.std(xAry));
+    const ySTD = Number(math.std(yAry));
     let sumOfDiff = 0;
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < xAry.length; i++) {
@@ -64,13 +64,13 @@ function getCorrelation(xAry, yAry) {
   return NaN;
 }
 
-function getLambda(r, rz) {
+function getLambda(r: number, rz: number) {
   const rSquare = r ** 2;
   const rZSquare = rz ** 2;
   return ((rz - 1) * (rSquare + rz) + Math.sqrt(rSquare * (rZSquare - 1) * (rSquare - 1))) / ((rz - 1) * (2 * rSquare + rz - 1));
 }
 
-function yTransform(xAry, yAry, lam) {
+function yTransform(xAry: number[], yAry: number[], lam: number) {
   const lamSquare = lam ** 2;
   return yAry.map((d, i) => (lam * xAry[i] + (1 - lam) * d) / Math.sqrt(lamSquare + (1 - lam) ** 2));
 }
@@ -86,7 +86,7 @@ function getSTDNormalDistriArray() {
   return res;
 }
 
-function getSTDNormalDistriArrayFixed(randomNumber) {
+function getSTDNormalDistriArrayFixed(randomNumber: () => number) {
   const res = [];
   while (res.length < dataSize) {
     const rnumber = getSTDNormalDistriNumberFixed(randomNumber);
@@ -98,7 +98,7 @@ function getSTDNormalDistriArrayFixed(randomNumber) {
 }
 
 // with outside u1, u2. garuantee same array
-export function generateDataSetFixed(r, seed) {
+export function generateDataSetFixed(r: number, seed: string) {
   const randomNumber = seedrandom(seed);
 
   const xAry = getSTDNormalDistriArrayFixed(randomNumber);
@@ -111,7 +111,7 @@ export function generateDataSetFixed(r, seed) {
   return xAry.map((d, i) => (r < 0 ? [d, -yAry[i]] : [d, yAry[i]]));
 }
 
-export function generateDataSet(r) {
+export function generateDataSet(r: number) {
   const xAry = getSTDNormalDistriArray();
   let yAry = getSTDNormalDistriArray();
   const rz = getCorrelation(xAry, yAry);
