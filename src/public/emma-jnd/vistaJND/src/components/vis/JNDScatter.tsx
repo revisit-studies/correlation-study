@@ -55,13 +55,20 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
 
   useEffect(() => {
     if (counter === 50) {
+      const observedJnd = Math.abs(r1 - r2);
+
       setAnswer({
         status: true,
         provenanceGraph: undefined,
-        answers: { scatterSelections: participantSelections },
+        answers: {
+          scatterSelections: participantSelections,
+          r1,
+          final_r2: r2,
+          observedJnd,
+        },
       });
     }
-  }, [counter, participantSelections]);
+  }, [counter, participantSelections, r1, r2, setAnswer]);
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
