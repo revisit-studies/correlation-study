@@ -3,7 +3,8 @@
   "configsList": [
     "ScatterJND-study",
     "ParallelJND-study",
-    "HexbinJND-study"
+    "HexbinJND-study",
+    "HeatmapJND-study"
   ],
   "configs": {
     "ScatterJND-study": {
@@ -14,6 +15,9 @@
     },
     "HexbinJND-study": {
       "path": "HexbinJND-study/config.json"
+    },
+    "HeatmapJND-study": {
+      "path": "HeatmapJND-study/config.json"
     }
   }
 }
