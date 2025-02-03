@@ -27,7 +27,7 @@
         "prompt": "Select an option",
         "required": true,
         "location": "aboveStimulus",
-        "type": "iframe",
+        "type": "numerical",
         "hidden": true
       }
       ]
@@ -62,7 +62,7 @@
         "prompt": "Did you complete the practice?",
         "required": true,
         "location": "aboveStimulus",
-        "type": "iframe",
+        "type": "numerical",
         "hidden": true
       }
       ]
