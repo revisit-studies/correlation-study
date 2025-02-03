@@ -1,11 +1,7 @@
 /* eslint-disable no-plusplus */
-import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
-import { axisLeft } from 'd3-axis';
 import { useEffect, useRef } from 'react';
 import { select } from 'd3-selection';
-import { axisBottom } from 'd3';
-import { generateDataSet, generateDataSetFixed } from '../../utils/dataGeneration';
 
 export default function Windflow({ v } : { v: number }) {
   const d3Container = useRef(null);

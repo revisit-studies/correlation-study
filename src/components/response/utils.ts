@@ -1,9 +1,29 @@
 import { useForm } from '@mantine/form';
 import { useEffect, useState } from 'react';
 import {
-  BaseResponse, NumberOption, Response, StringOption,
+  CheckboxResponse, NumberOption, Response, StringOption,
 } from '../../parser/types';
 import { StoredAnswer } from '../../store/types';
+
+function checkCheckboxResponse(response: Response, value: string[]) {
+  if (response.type === 'checkbox') {
+    // Check max and min selections
+    const checkboxResponse = response as CheckboxResponse;
+    const minNotSelected = checkboxResponse.minSelections && value.length < checkboxResponse.minSelections;
+    const maxNotSelected = checkboxResponse.maxSelections && value.length > checkboxResponse.maxSelections;
+
+    if (minNotSelected && maxNotSelected) {
+      return `Please select between ${checkboxResponse.minSelections} and ${checkboxResponse.maxSelections} options`;
+    }
+    if (minNotSelected) {
+      return `Please select at least ${checkboxResponse.minSelections} options`;
+    }
+    if (maxNotSelected) {
+      return `Please select at most ${checkboxResponse.maxSelections} options`;
+    }
+  }
+  return null;
+}
 
 const queryParameters = new URLSearchParams(window.location.search);
 export const generateInitFields = (responses: Response[], storedAnswer: StoredAnswer['answer']) => {
@@ -11,11 +31,25 @@ export const generateInitFields = (responses: Response[], storedAnswer: StoredAn
 
   responses.forEach((response) => {
     const answer = storedAnswer ? storedAnswer[response.id] : {};
+
     if (answer) {
       initObj = { ...initObj, [response.id]: answer };
     } else {
-      const initField = response.paramCapture ? queryParameters.get(response.paramCapture) : '';
-      initObj = { ...initObj, [response.id]: response.type === 'iframe' ? [] : initField };
+      let initField: string | string[] | object | null = '';
+      if (response.paramCapture) {
+        initField = queryParameters.get(response.paramCapture);
+      } else if (response.type === 'reactive') {
+        initField = [];
+      } else if (response.type === 'matrix-radio' || response.type === 'matrix-checkbox') {
+        initField = Object.fromEntries(
+          response.questionOptions.map((entry) => [entry, '']),
+        );
+      } else if (response.type === 'slider' && response.startingValue) {
+        initField = response.startingValue.toString();
+      }
+
+      const dontKnowObj = response.withDontKnow ? { [`${response.id}-dontKnow`]: '' } : {};
+      initObj = { ...initObj, [response.id]: initField, ...dontKnowObj };
     }
   });
 
@@ -28,11 +62,15 @@ const generateValidation = (responses: Response[]) => {
     if (response.required) {
       validateObj = {
         ...validateObj,
-        [response.id]: (value: string | string[]) => {
+        [response.id]: (value: StoredAnswer['answer'][string], values: StoredAnswer['answer']) => {
+          if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+            return Object.values(value).every((val) => val !== '') ? null : 'Empty Input';
+          }
           if (Array.isArray(value)) {
             if (response.requiredValue != null && !Array.isArray(response.requiredValue)) {
-              return 'Incorrect required value';
-            } if (response.requiredValue != null && Array.isArray(response.requiredValue)) {
+              return 'Incorrect required value. Contact study administrator.';
+            }
+            if (response.requiredValue != null && Array.isArray(response.requiredValue)) {
               if (response.requiredValue.length !== value.length) {
                 return 'Incorrect input';
               }
@@ -41,13 +79,16 @@ const generateValidation = (responses: Response[]) => {
 
               return sortedReq.every((val, index) => val === sortedVal[index]) ? null : 'Incorrect input';
             }
+            if (response.type === 'checkbox') {
+              return checkCheckboxResponse(response, value);
+            }
             return value.length === 0 ? 'Empty input' : null;
           }
           if (response.required && response.requiredValue != null && value != null) {
             return value.toString() !== response.requiredValue.toString() ? 'Incorrect input' : null;
           }
           if (response.required) {
-            return value === null || value === undefined || value === '' ? 'Empty input' : null;
+            return (value === null || value === undefined || value === '') && !values[`${response.id}-dontKnow`] ? 'Empty input' : null;
           }
           return value === null ? 'Empty input' : null;
         },
@@ -87,8 +128,8 @@ export function areAnswersEqual(
 }
 
 export function generateErrorMessage(
-  response: BaseResponse,
-  answer: { value?: string | string[]; checked?: string[] },
+  response: Response,
+  answer: { value?: string | string[] | Record<string, string>; checked?: string[] },
   options?: (StringOption | NumberOption)[],
 ) {
   const { requiredValue, requiredLabel } = response;
@@ -96,6 +137,8 @@ export function generateErrorMessage(
   let error: string | null = '';
   if (answer.checked && Array.isArray(requiredValue)) {
     error = requiredValue && [...requiredValue].sort().toString() !== [...answer.checked].sort().toString() ? `Please ${options ? 'select' : 'enter'} ${requiredLabel || requiredValue.toString()} to continue.` : null;
+  } else if (answer.checked && response.required) {
+    error = checkCheckboxResponse(response, answer.checked);
   } else {
     error = answer.value && requiredValue && requiredValue.toString() !== answer.value.toString() ? `Please ${options ? 'select' : 'enter'} ${requiredLabel || (options ? options.find((opt) => opt.value === requiredValue)?.label : requiredValue.toString())} to continue.` : null;
   }

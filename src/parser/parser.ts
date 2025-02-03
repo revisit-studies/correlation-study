@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { parse as hjsonParse } from 'hjson';
 import Ajv from 'ajv';
 import configSchema from './StudyConfigSchema.json';
 import globalSchema from './GlobalConfigSchema.json';
 import {
-  GlobalConfig, IndividualComponent, InheritedComponent, ParsedStudyConfig, StudyConfig,
+  GlobalConfig, LibraryConfig, ParsedConfig, StudyConfig,
 } from './types';
 import { getSequenceFlatMapWithInterruptions } from '../utils/getSequenceFlatMap';
+import { expandLibrarySequences, loadLibrariesParseNamespace, verifyLibraryUsage } from './libraryParser';
+import { isInheritedComponent } from './utils';
 
 const ajv1 = new Ajv();
 ajv1.addSchema(globalSchema);
@@ -30,12 +30,8 @@ function verifyGlobalConfig(data: GlobalConfig) {
   return [configsListVerified, errors] as const;
 }
 
-export function isInheritedComponent(comp: IndividualComponent | InheritedComponent) : comp is InheritedComponent {
-  return (<InheritedComponent>comp).baseComponent !== undefined;
-}
-
 export function parseGlobalConfig(fileData: string) {
-  const data = hjsonParse(fileData);
+  const data = JSON.parse(fileData);
 
   const validatedData = globalValidate(data) as boolean;
   const extraValidation = verifyGlobalConfig(data);
@@ -116,9 +112,11 @@ function verifyStudySkip(
 }
 
 // This function verifies the study config file satisfies conditions that are not covered by the schema
-function verifyStudyConfig(studyConfig: StudyConfig) {
-  const errors: ParsedStudyConfig['errors'] = [];
-  const warnings: ParsedStudyConfig['warnings'] = [];
+function verifyStudyConfig(studyConfig: StudyConfig, importedLibrariesData: Record<string, LibraryConfig>) {
+  const errors: ParsedConfig<StudyConfig>['errors'] = [];
+  const warnings: ParsedConfig<StudyConfig>['warnings'] = [];
+
+  verifyLibraryUsage(studyConfig, errors, importedLibrariesData);
 
   // Verify components are well defined
   Object.entries(studyConfig.components)
@@ -151,7 +149,13 @@ function verifyStudyConfig(studyConfig: StudyConfig) {
 
   // Warnings for components that are defined but not used in the sequence
   Object.keys(studyConfig.components)
-    .filter((componentName) => !usedComponents.includes(componentName))
+    .filter((componentName) => (
+      !usedComponents.includes(componentName)
+      && !componentName.includes('.se.')
+      && !componentName.includes('.sequences.')
+      && !componentName.includes('.co.')
+      && !componentName.includes('.components.')
+    ))
     .forEach((componentName) => {
       warnings.push({
         message: `Component \`${componentName}\` is defined in components object but not used in the sequence`,
@@ -174,27 +178,39 @@ function verifyStudyConfig(studyConfig: StudyConfig) {
   return { errors, warnings };
 }
 
-export function parseStudyConfig(fileData: string): ParsedStudyConfig {
+export async function parseStudyConfig(fileData: string): Promise<ParsedConfig<StudyConfig>> {
   let validatedData = false;
   let data: StudyConfig | undefined;
 
   try {
-    data = hjsonParse(fileData);
+    data = JSON.parse(fileData);
     validatedData = studyValidate(data) as boolean;
   } catch {
     validatedData = false;
   }
 
-  let errors: Required<ParsedStudyConfig>['errors'] = [];
-  let warnings: Required<ParsedStudyConfig>['warnings'] = [];
+  let errors: Required<ParsedConfig<StudyConfig>>['errors'] = studyValidate.errors || [];
+  let warnings: Required<ParsedConfig<StudyConfig>>['warnings'] = [];
 
   // We can only run our custom validator if the schema validation passes
-  if (validatedData) {
-    const { errors: parserErrors, warnings: parserWarnings } = verifyStudyConfig(data!);
-    errors = [...(studyValidate.errors || []), ...parserErrors];
-    warnings = parserWarnings;
+  if (validatedData && data) {
+    const importedLibraries = data.importedLibraries || [];
+    const importedLibrariesData = await loadLibrariesParseNamespace(importedLibraries, errors, warnings);
+
+    // Add the imported libraries to the components object and baseComponents object
+    Object.values(importedLibrariesData).forEach((libraryData) => {
+      data.components = { ...data.components, ...libraryData.components };
+      data.baseComponents = { ...data.baseComponents, ...libraryData.components };
+    });
+
+    // Expand the imported sequences to use the correct component names
+    data.sequence = expandLibrarySequences(data.sequence, importedLibrariesData, errors);
+
+    const { errors: parserErrors, warnings: parserWarnings } = verifyStudyConfig(data, importedLibrariesData);
+    errors = [...errors, ...parserErrors];
+    warnings = [...warnings, ...parserWarnings];
   } else {
-    errors = studyValidate.errors || [{ message: 'There was an issue validating your config file', instancePath: 'root', params: { action: 'fix the errors in your file or make sure the global config references the right file path' } }];
+    errors = [...errors, { message: 'There was an issue validating your config file', instancePath: 'root', params: { action: 'fix the errors in your file or make sure the global config references the right file path' } }];
   }
 
   return { ...data as StudyConfig, errors, warnings };

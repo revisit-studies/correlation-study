@@ -4,8 +4,7 @@ import * as math from 'mathjs';
 const mu = 0;
 const sigma = 1;
 const rng = seedrandom('thisisjndexperimentseed');
-// eslint-disable-next-line @typescript-eslint/no-loss-of-precision
-const twoPi = 2.0 * 3.14159265358979323846;
+const twoPi = 2.0 * Math.PI;
 const dataSize = 100;
 
 export function shuffle<T>(array: T[]) {

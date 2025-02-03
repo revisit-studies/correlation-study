@@ -5,7 +5,6 @@
  *    This file contains the functionality to create a Heatmap Plot.
  */
 
-import { scaleLinear } from 'd3-scale';
 import * as d3 from 'd3';
 import {
   useCallback, useEffect, useRef, useState,
@@ -35,13 +34,13 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
 
     svg.selectAll('*').remove();
 
-    const xScale = scaleLinear()
-      .domain([d3.min(xSorted)!, d3.max(xSorted)!])
-      .range([0, width]);
+    // const xScale = scaleLinear()
+    //   .domain([d3.min(xSorted)!, d3.max(xSorted)!])
+    //   .range([0, width]);
 
-    const yScale = scaleLinear()
-      .domain([d3.min(yCorrelated)!, d3.max(yCorrelated)!])
-      .range([0, width]);
+    // const yScale = scaleLinear()
+    //   .domain([d3.min(yCorrelated)!, d3.max(yCorrelated)!])
+    //   .range([0, width]);
 
     svg.append('g')
       .selectAll('rect')

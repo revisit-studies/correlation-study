@@ -56,6 +56,8 @@ export interface ParticipantData {
   participantConfigHash: string;
   /** Sequence of components that the participant received. This is an internal data type and is compiled from the ComponentBlocks in the StudyConfig sequence. */
   sequence: Sequence;
+  /** Index of the participant in the study. */
+  participantIndex: number;
   /** Object whose keys are the component names and values are StoredAnswer objects. */
   answers: Record<string, StoredAnswer>;
   /** Query parameters of the URL used to enter the study. */
@@ -64,6 +66,11 @@ export interface ParticipantData {
   metadata: ParticipantMetadata
   /** Whether the participant has completed the study. */
   completed: boolean;
-  /** Whether the participant has been rejected. */
-  rejected: boolean;
+  /** Whether the participant has been rejected and the reason. */
+  rejected: {
+    reason: string;
+    timestamp: number;
+  } | false;
+  /** The component blocks that the participant entered. */
+  participantTags: string[];
 }

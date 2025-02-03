@@ -34,8 +34,10 @@ import ScatterWrapper from './ScatterWrapper';
  */
 export default function JND({ setAnswer, parameters } : StimulusParams<{r1: number, r2:number, above: boolean}>) {
   const [counter, setCounter] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [above, setAbove] = useState(parameters.above);
   const [participantSelections, setParticipantSelections] = useState<{correct: boolean}[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [r1, setR1] = useState(parameters.r1);
   const [r2, setR2] = useState(parameters.r2);
 

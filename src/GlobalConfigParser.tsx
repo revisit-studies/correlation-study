@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import { ModalsProvider } from '@mantine/modals';
 import { AppShell } from '@mantine/core';
-import ConfigSwitcher from './components/ConfigSwitcher';
+import { ConfigSwitcher } from './components/ConfigSwitcher';
 import { Shell } from './components/Shell';
 import { parseGlobalConfig } from './parser/parser';
-import { GlobalConfig, Nullable, ParsedStudyConfig } from './parser/types';
-import { AnalysisInterface } from './analysis/AnalysisInterface';
+import {
+  GlobalConfig, Nullable, ParsedConfig, StudyConfig,
+} from './parser/types';
+import { StudyAnalysisTabs } from './analysis/individualStudy/StudyAnalysisTabs';
 import { PREFIX } from './utils/Prefix';
 import { ProtectedRoute } from './ProtectedRoute';
 import { Login } from './Login';
 import { AuthProvider } from './store/hooks/useAuth';
-import { AnalysisDashboard } from './analysis/AnalysisDashboard';
-import { GlobalSettings } from './analysis/dashboard/GlobalSettings';
+import { GlobalSettings } from './components/settings/GlobalSettings';
 import { NavigateWithParams } from './utils/NavigateWithParams';
-import AppHeader from './analysis/components/interface/AppHeader';
+import { AppHeader } from './analysis/interface/AppHeader';
 import { fetchStudyConfigs } from './utils/fetchConfig';
 import { initializeStorageEngine } from './storage/initialize';
 import { useStorageEngine } from './storage/storageEngineHooks';
 import { FirebaseStorageEngine } from './storage/engines/FirebaseStorageEngine';
+import { PageTitle } from './utils/PageTitle';
 
 async function fetchGlobalConfigArray() {
   const globalFile = await fetch(`${PREFIX}global.json`);
@@ -28,7 +30,7 @@ async function fetchGlobalConfigArray() {
 
 export function GlobalConfigParser() {
   const [globalConfig, setGlobalConfig] = useState<Nullable<GlobalConfig>>(null);
-  const [studyConfigs, setStudyConfigs] = useState<Record<string, ParsedStudyConfig | null>>({});
+  const [studyConfigs, setStudyConfigs] = useState<Record<string, ParsedConfig<StudyConfig> | null>>({});
 
   useEffect(() => {
     async function fetchData() {
@@ -76,81 +78,92 @@ export function GlobalConfigParser() {
     <BrowserRouter basename={PREFIX}>
       <AuthProvider>
         <ModalsProvider>
-          <AppShell
-            padding="md"
-            header={{ height: 70 }}
-          >
-            <Routes>
-              <Route
-                path="/"
-                element={(
-                  <>
+          <Routes>
+            <Route
+              path="/"
+              element={(
+                <>
+                  <PageTitle title="ReVISit | Home" />
+                  <AppShell
+                    padding="md"
+                    header={{ height: 70 }}
+                  >
                     <AppHeader studyIds={globalConfig.configsList} />
                     <ConfigSwitcher
                       globalConfig={globalConfig}
                       studyConfigs={studyConfigs}
                     />
-                  </>
+                  </AppShell>
+                </>
             )}
-              />
-              <Route
-                path="/:studyId/*"
-                element={<Shell globalConfig={globalConfig} />}
-              />
-              <Route
-                path="/analysis/dashboard"
-                element={(
-                  <AnalysisDashboard
-                    globalConfig={globalConfig}
-                  />
-              )}
-              />
-              <Route
-                path="/analysis"
-                element={<NavigateWithParams to="/analysis/dashboard" />}
-              />
-              <Route
-                path="/analysis/stats/:studyId/:tab"
-                // loader={(params)=>{
-                //   console.log(params)
-                //   return false;
-                // }}
-                element={(
+            />
+            <Route
+              path="/:studyId/*"
+              element={(
+                <>
+                  <PageTitle title="ReVISit | Study" />
+                  <Shell globalConfig={globalConfig} />
+                </>
+                )}
+            />
+            <Route
+              path="/analysis/stats/:studyId/:tab/:trialId?"
+              element={(
+                <>
+                  <PageTitle title="ReVISit | Analysis" />
                   <ProtectedRoute paramToCheck="studyId" paramCallback={analysisProtectedCallback}>
-                    <AnalysisInterface
-                      globalConfig={globalConfig}
-                    />
+                    <AppShell
+                      padding="md"
+                      header={{ height: 70 }}
+                    >
+                      <StudyAnalysisTabs
+                        globalConfig={globalConfig}
+                      />
+                    </AppShell>
                   </ProtectedRoute>
+                </>
             )}
-              />
-              <Route
-                path="/analysis/stats/:studyId"
-                element={<NavigateWithParams to="./table" replace />}
-              />
-              <Route
-                path="/settings"
-                element={(
-                  <ProtectedRoute>
+            />
+            <Route
+              path="/analysis/stats/:studyId"
+              element={<NavigateWithParams to="./table" replace />}
+            />
+            <Route
+              path="/settings"
+              element={(
+                <ProtectedRoute>
+                  <PageTitle title="ReVISit | Settings" />
+                  <AppShell
+                    padding="md"
+                    header={{ height: 70 }}
+                  >
                     <AppHeader studyIds={globalConfig.configsList} />
                     <AppShell.Main>
                       <GlobalSettings />
                     </AppShell.Main>
-                  </ProtectedRoute>
+                  </AppShell>
+                </ProtectedRoute>
             )}
-              />
-              <Route
-                path="/login"
-                element={(
-                  <>
+            />
+            <Route
+              path="/login"
+              element={(
+                <>
+                  <PageTitle title="ReVISit | Login" />
+                  <AppShell
+                    padding="md"
+                    header={{ height: 70 }}
+                  >
                     <AppHeader studyIds={globalConfig.configsList} />
+
                     <AppShell.Main>
                       <Login />
                     </AppShell.Main>
-                  </>
+                  </AppShell>
+                </>
             )}
-              />
-            </Routes>
-          </AppShell>
+            />
+          </Routes>
         </ModalsProvider>
       </AuthProvider>
     </BrowserRouter>

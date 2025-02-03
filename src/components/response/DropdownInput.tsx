@@ -3,9 +3,9 @@ import {
 } from '@mantine/core';
 import { DropdownResponse } from '../../parser/types';
 import { generateErrorMessage } from './utils';
-import ReactMarkdownWrapper from '../ReactMarkdownWrapper';
+import { ReactMarkdownWrapper } from '../ReactMarkdownWrapper';
 
-export default function DropdownInput({
+export function DropdownInput({
   response,
   disabled,
   answer,
@@ -26,12 +26,14 @@ export default function DropdownInput({
     secondaryText,
   } = response;
 
+  const optionsAsStringOptions = options.map((option) => (typeof option === 'string' ? { value: option, label: option } : option));
+
   return (
     <Select
       disabled={disabled}
       label={(
         <Flex direction="row" wrap="nowrap" gap={4}>
-          {enumerateQuestions && <Box style={{ minWidth: 'fit-content' }}>{`${index}. `}</Box>}
+          {enumerateQuestions && <Box style={{ minWidth: 'fit-content', fontSize: 16, fontWeight: 500 }}>{`${index}. `}</Box>}
           <Box style={{ display: 'block' }} className="no-last-child-bottom-padding">
             <ReactMarkdownWrapper text={prompt} required={required} />
           </Box>
@@ -39,11 +41,11 @@ export default function DropdownInput({
       )}
       description={secondaryText}
       placeholder={placeholder}
-      data={options}
+      data={optionsAsStringOptions}
       radius="md"
       size="md"
       {...answer}
-      error={generateErrorMessage(response, answer, options)}
+      error={generateErrorMessage(response, answer, optionsAsStringOptions)}
     />
   );
 }

@@ -1,15 +1,16 @@
 import {
-  Badge, Box, NavLink, Popover, Text,
+  Badge, Box, NavLink, Popover, Text, Tooltip,
 } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
-import { IconArrowsShuffle, IconBrain } from '@tabler/icons-react';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { IconArrowsShuffle, IconBrain, IconPackageImport } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { ComponentBlock } from '../../parser/types';
+import { useCallback, useMemo } from 'react';
+import { ComponentBlock, StudyConfig } from '../../parser/types';
 import { Sequence } from '../../store/types';
 import { deepCopy } from '../../utils/deepCopy';
 import { useCurrentStep, useStudyId } from '../../routes/utils';
 import { getSequenceFlatMap } from '../../utils/getSequenceFlatMap';
-import { useStudyConfig } from '../../store/hooks/useStudyConfig';
+import { encryptIndex } from '../../utils/encryptDecryptIndex';
 
 export type ComponentBlockWithOrderPath = Omit<ComponentBlock, 'components'> & { orderPath: string; components: (ComponentBlockWithOrderPath | string)[]};
 
@@ -89,28 +90,48 @@ function StepItem({
   fullSequence,
   startIndex,
   interruption,
-  subSequence,
   participantView,
+  studyConfig,
+  subSequence,
+  analysisNavigation,
 }: {
   step: string;
   disabled: boolean;
   fullSequence: Sequence;
   startIndex: number;
   interruption: boolean;
-  subSequence?: Sequence;
   participantView: boolean;
+  studyConfig: StudyConfig;
+  subSequence?: Sequence;
+  analysisNavigation?: boolean;
 }) {
   const studyId = useStudyId();
   const navigate = useNavigate();
   const currentStep = useCurrentStep();
-  const studyConfig = useStudyConfig();
   const [opened, { close, open }] = useDisclosure(false);
 
   const task = step in studyConfig.components && studyConfig.components[step];
 
   const stepIndex = subSequence && subSequence.components.slice(startIndex).includes(step) ? findTaskIndexInSequence(fullSequence, step, startIndex, subSequence.orderPath) : -1;
 
-  const active = participantView ? currentStep === stepIndex : currentStep === `reviewer-${step}`;
+  const { trialId } = useParams();
+  const [searchParams] = useSearchParams();
+  const participantId = useMemo(() => searchParams.get('participantId'), [searchParams]);
+
+  const analysisActive = trialId === step;
+  const studyActive = participantView ? currentStep === stepIndex : currentStep === `reviewer-${step}`;
+  const active = analysisNavigation ? analysisActive : studyActive;
+
+  const analysisNavigateTo = useCallback(() => (trialId ? navigate(`./../${step}`) : navigate(`./${step}`)), [navigate, step, trialId]);
+  // eslint-disable-next-line no-nested-ternary
+  const studyNavigateTo = () => (participantView ? (participantId ? navigate(`/${studyId}/${encryptIndex(stepIndex)}?participantId=${participantId}`) : navigate(`/${studyId}/${encryptIndex(stepIndex)}`)) : navigate(`/${studyId}/reviewer-${step}`));
+  const navigateTo = analysisNavigation ? analysisNavigateTo : studyNavigateTo;
+
+  // eslint-disable-next-line no-nested-ternary
+  const coOrComponents = step.includes('.co.')
+    ? '.co.'
+    : (step.includes('.components.') ? '.components.' : false);
+  const cleanedStep = step.includes('$') && coOrComponents && step.includes(coOrComponents) ? step.split(coOrComponents).at(-1) : step;
 
   return (
     <Popover withinPortal position="left" withArrow arrowSize={10} shadow="md" opened={opened} offset={20}>
@@ -128,36 +149,37 @@ function StepItem({
             label={(
               <Box>
                 {interruption && <IconBrain size={16} style={{ marginRight: 4, marginBottom: -2 }} color="orange" />}
-                {active ? <Text size="sm" span fw="700" display="inline">{step}</Text> : <Text size="sm" display="inline">{step}</Text>}
+                {step !== cleanedStep && (
+                  <IconPackageImport size={16} style={{ marginRight: 4, marginBottom: -2 }} color="var(--mantine-color-blue-outline)" />
+                )}
+                <Text size="sm" span={active} fw={active ? '700' : undefined} display="inline">{cleanedStep}</Text>
               </Box>
             )}
-            onClick={() => (participantView ? navigate(`/${studyId}/${stepIndex}`) : navigate(`/${studyId}/reviewer-${step}`))}
+            onClick={navigateTo}
             disabled={disabled}
           />
         </Box>
       </Popover.Target>
       {task && (task.description || task.meta) && (
         <Popover.Dropdown onMouseLeave={close}>
-          <Text size="sm">
+          <Box>
+            {task.description && (
             <Box>
-              {task.description && (
-                <Box>
-                  <Text fw={900} display="inline-block" mr={2}>
-                    Description:
-                  </Text>
-                  <Text fw={400} component="span">
-                    {task.description}
-                  </Text>
-                </Box>
-              )}
-              {task.meta && (
-                <Text>
-                  <Text fw="900" component="span">Task Meta: </Text>
-                  <Text component="pre" style={{ margin: 0, padding: 0 }}>{`${JSON.stringify(task.meta, null, 2)}`}</Text>
-                </Text>
-              )}
+              <Text fw={900} display="inline-block" mr={2}>
+                Description:
+              </Text>
+              <Text fw={400} component="span">
+                {task.description}
+              </Text>
             </Box>
-          </Text>
+            )}
+            {task.meta && (
+            <Box>
+              <Text fw="900" component="span">Task Meta: </Text>
+              <Text component="pre" style={{ margin: 0, padding: 0 }}>{`${JSON.stringify(task.meta, null, 2)}`}</Text>
+            </Box>
+            )}
+          </Box>
         </Popover.Dropdown>
       )}
     </Popover>
@@ -169,11 +191,15 @@ export function StepsPanel({
   fullSequence,
   participantSequence,
   participantView,
+  studyConfig,
+  analysisNavigation,
 }: {
   configSequence: ComponentBlockWithOrderPath;
   fullSequence: Sequence;
   participantSequence?: Sequence;
   participantView: boolean;
+  studyConfig: StudyConfig;
+  analysisNavigation?: boolean;
 }) {
   // If the participantSequence is provided, reorder the components
   let components = deepCopy(configSequence.components);
@@ -202,8 +228,10 @@ export function StepsPanel({
               fullSequence={fullSequence}
               startIndex={idx}
               interruption={(configSequence.interruptions && (configSequence.interruptions.findIndex((i) => i.components.includes(step)) > -1)) || false}
-              subSequence={participantSequence}
               participantView={participantView}
+              studyConfig={studyConfig}
+              subSequence={participantSequence}
+              analysisNavigation={analysisNavigation}
             />
           );
         }
@@ -223,11 +251,13 @@ export function StepsPanel({
                   opacity: sequenceStepsLength > 0 ? 1 : 0.5,
                 }}
               >
-                <Text size="sm" display="inline">
-                  {step.order}
+                <Text size="sm" display="inline" fw={700}>
+                  {step.id ? step.id : step.order}
                 </Text>
                 {step.order === 'random' || step.order === 'latinSquare' ? (
-                  <IconArrowsShuffle size="15" opacity={0.5} style={{ marginLeft: '5px', verticalAlign: 'middle' }} />
+                  <Tooltip label={step.order} position="right" withArrow>
+                    <IconArrowsShuffle size="15" opacity={0.5} style={{ marginLeft: '5px', verticalAlign: 'middle' }} />
+                  </Tooltip>
                 ) : null}
                 {participantView && (
                 <Badge ml={5} variant="light">
@@ -251,7 +281,7 @@ export function StepsPanel({
             }}
           >
             <Box style={{ borderLeft: '1px solid #e9ecef' }}>
-              <StepsPanel configSequence={step} participantSequence={participantSubSequence} fullSequence={fullSequence} participantView={participantView} />
+              <StepsPanel configSequence={step} participantSequence={participantSubSequence} fullSequence={fullSequence} participantView={participantView} studyConfig={studyConfig} analysisNavigation={analysisNavigation} />
             </Box>
           </NavLink>
         );

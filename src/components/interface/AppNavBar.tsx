@@ -1,15 +1,13 @@
 import { AppShell, Text } from '@mantine/core';
-import merge from 'lodash.merge';
 import { useMemo } from 'react';
-import ReactMarkdownWrapper from '../ReactMarkdownWrapper';
+import { ReactMarkdownWrapper } from '../ReactMarkdownWrapper';
 import { useStudyConfig } from '../../store/hooks/useStudyConfig';
 import { useStoredAnswer } from '../../store/hooks/useStoredAnswer';
-import ResponseBlock from '../response/ResponseBlock';
+import { ResponseBlock } from '../response/ResponseBlock';
 import { useCurrentComponent } from '../../routes/utils';
-import { IndividualComponent } from '../../parser/types';
-import { isInheritedComponent } from '../../parser/parser';
+import { studyComponentToIndividualComponent } from '../../utils/handleComponentInheritance';
 
-export default function AppNavBar() {
+export function AppNavBar() {
   const trialHasSideBar = useStudyConfig()?.uiConfig.sidebar;
   const trialHasSideBarResponses = true;
 
@@ -20,17 +18,11 @@ export default function AppNavBar() {
 
   const currentConfig = useMemo(() => {
     if (stepConfig) {
-      return isInheritedComponent(stepConfig) && studyConfig.baseComponents
-        ? (merge(
-          {},
-          studyConfig.baseComponents?.[stepConfig.baseComponent],
-          stepConfig,
-        ) as IndividualComponent)
-        : (stepConfig as IndividualComponent);
+      return studyComponentToIndividualComponent(stepConfig, studyConfig);
     }
 
     return null;
-  }, [stepConfig, studyConfig.baseComponents]);
+  }, [stepConfig, studyConfig]);
 
   const status = useStoredAnswer();
   const instruction = currentConfig?.instruction || '';
@@ -45,12 +37,10 @@ export default function AppNavBar() {
           bg="gray.3"
           p="md"
         >
-          <Text c="gray.9">
-            <Text span c="orange.8" fw={700} inherit>
-              Task:
-            </Text>
-            <ReactMarkdownWrapper text={instruction} />
+          <Text span c="orange.8" fw={700} inherit>
+            Task:
           </Text>
+          <ReactMarkdownWrapper text={instruction} />
         </AppShell.Section>
       )}
 
