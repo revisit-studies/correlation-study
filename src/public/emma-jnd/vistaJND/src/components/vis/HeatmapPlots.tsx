@@ -51,7 +51,7 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
       .attr('y', 0)
       .attr('width', width / xSorted.length)
       .attr('height', height)
-      .style('fill', (d) => d3.interpolateViridis((d - d3.min(xSorted)!) / (d3.max(xSorted)! - d3.min(xSorted)!)))
+      .style('fill', (d) => d3.interpolateRdBu((d - d3.min(xSorted)!) / (d3.max(xSorted)! - d3.min(xSorted)!)))
       .style('cursor', 'pointer')
       .on('click', () => onClick());
 
@@ -64,7 +64,7 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
       .attr('y', height + spacing)
       .attr('width', width / yCorrelated.length)
       .attr('height', height)
-      .style('fill', (d) => d3.interpolateViridis((d - d3.min(yCorrelated)!) / (d3.max(yCorrelated)! - d3.min(yCorrelated)!)))
+      .style('fill', (d) => d3.interpolateRdBu((d - d3.min(yCorrelated)!) / (d3.max(yCorrelated)! - d3.min(yCorrelated)!)))
       .style('cursor', 'pointer')
       .on('click', () => onClick());
   }, [r, onClick]);
