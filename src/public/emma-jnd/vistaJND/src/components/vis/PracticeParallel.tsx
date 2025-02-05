@@ -61,7 +61,7 @@ export default function PracticeScatter({ setAnswer } : StimulusParams<Record<st
         {counter}
         /20
       </Text>
-      <Text style={{ textAlign: 'center' }}>Select an option</Text>
+      <Text style={{ textAlign: 'center' }}>Select the option with the higher correlation</Text>
       <Center>
         <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>

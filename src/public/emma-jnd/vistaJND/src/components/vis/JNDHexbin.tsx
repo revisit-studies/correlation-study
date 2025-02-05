@@ -94,7 +94,7 @@ export default function JND({ setAnswer, parameters } : StimulusParams<{r1: numb
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
-      <Text style={{ textAlign: 'center' }}>Select an option</Text>
+      <Text style={{ textAlign: 'center' }}>Select the option with the higher correlation</Text>
       <Center>
         <HexbinWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>

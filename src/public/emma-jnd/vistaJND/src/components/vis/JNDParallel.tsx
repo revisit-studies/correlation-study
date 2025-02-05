@@ -75,7 +75,7 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
         {counter}
         /50
       </Text>
-      <Text style={{ textAlign: 'center' }}>Select an option</Text>
+      <Text style={{ textAlign: 'center' }}>Select the option with the higher correlation</Text>
       <Center>
         <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>

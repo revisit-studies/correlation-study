@@ -11,7 +11,7 @@ export function RadioOptions() {
   const [value, setValue] = useState('');
   return (
     <Center style={{ flexDirection: 'column' }}>
-      <Text style={{ textAlign: 'center' }}>Select an option</Text>
+      <Text style={{ textAlign: 'center' }}>Select the option with the higher correlation</Text>
       <RadioGroup value={value} onChange={setValue}>
         <Flex
           gap="md"
