@@ -35,12 +35,12 @@ export default function HeatmapWrapper({
   };
 
   return higherFirst ? (
-    <Group>
+    <Group style={{ gap: '100px' }}>
       <HeatmapPlots key={key} onClick={() => handleClick(1)} r={r1} />
       <HeatmapPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
     </Group>
   ) : (
-    <Group>
+    <Group style={{ gap: '100px' }}>
       <HeatmapPlots key={key} onClick={() => handleClick(2)} r={r2} />
       <HeatmapPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
     </Group>
