@@ -65,7 +65,7 @@ export default function PracticeHexbin({
         {counter}
         /20
       </Text>
-      <Text style={{ textAlign: 'center' }}>Select the option with the higher correlation</Text>
+      <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
       <Center>
         <HexbinWrapper
           onClick={onClick}
