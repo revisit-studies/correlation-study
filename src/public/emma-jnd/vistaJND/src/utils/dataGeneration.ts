@@ -5,7 +5,6 @@ const mu = 0;
 const sigma = 1;
 const rng = seedrandom('thisisjndexperimentseed');
 const twoPi = 2.0 * Math.PI;
-const dataSize = 100;
 
 export function shuffle<T>(array: T[]) {
   let currentIndex = array.length; let
@@ -74,7 +73,7 @@ function yTransform(xAry: number[], yAry: number[], lam: number) {
   return yAry.map((d, i) => (lam * xAry[i] + (1 - lam) * d) / Math.sqrt(lamSquare + (1 - lam) ** 2));
 }
 
-function getSTDNormalDistriArray() {
+function getSTDNormalDistriArray(dataSize: number) {
   const res = [];
   while (res.length < dataSize) {
     const rnumber = getSTDNormalDistriNumber();
@@ -85,7 +84,7 @@ function getSTDNormalDistriArray() {
   return res;
 }
 
-function getSTDNormalDistriArrayFixed(randomNumber: () => number) {
+function getSTDNormalDistriArrayFixed(randomNumber: () => number, dataSize: number) {
   const res = [];
   while (res.length < dataSize) {
     const rnumber = getSTDNormalDistriNumberFixed(randomNumber);
@@ -97,11 +96,11 @@ function getSTDNormalDistriArrayFixed(randomNumber: () => number) {
 }
 
 // with outside u1, u2. garuantee same array
-export function generateDataSetFixed(r: number, seed: string) {
+export function generateDataSetFixed(r: number, seed: string, dataSize: number = 100) {
   const randomNumber = seedrandom(seed);
 
-  const xAry = getSTDNormalDistriArrayFixed(randomNumber);
-  let yAry = getSTDNormalDistriArrayFixed(randomNumber);
+  const xAry = getSTDNormalDistriArrayFixed(randomNumber, dataSize);
+  let yAry = getSTDNormalDistriArrayFixed(randomNumber, dataSize);
 
   const rz = getCorrelation(xAry, yAry);
 
@@ -110,9 +109,9 @@ export function generateDataSetFixed(r: number, seed: string) {
   return xAry.map((d, i) => (r < 0 ? [d, -yAry[i]] : [d, yAry[i]]));
 }
 
-export function generateDataSet(r: number) {
-  const xAry = getSTDNormalDistriArray();
-  let yAry = getSTDNormalDistriArray();
+export function generateDataSet(r: number, dataSize: number = 100) {
+  const xAry = getSTDNormalDistriArray(dataSize);
+  let yAry = getSTDNormalDistriArray(dataSize);
   const rz = getCorrelation(xAry, yAry);
   const lam = getLambda(r, rz);
   yAry = yTransform(xAry, yAry, lam);

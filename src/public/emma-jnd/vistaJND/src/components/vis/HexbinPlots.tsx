@@ -23,7 +23,7 @@ export default function HexbinPlots({ r, onClick } : { r: number, onClick: () =>
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const createChart = useCallback(() => {
-    const data: [number, number][] = generateDataSetFixed(r, Date.now().toString()) as [number, number][];
+    const data: [number, number][] = generateDataSetFixed(r, Date.now().toString(), 1000) as [number, number][];
     const margin = {
       left: 0,
       top: 20,
