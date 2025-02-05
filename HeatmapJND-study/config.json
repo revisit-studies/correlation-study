@@ -24,7 +24,7 @@
       "path": "emma-jnd/vistaJND/src/components/vis/JNDHeatmap.tsx",
       "response": [{ 
         "id": "heatmapSelections",
-        "prompt": "Select an option",
+        "prompt": "Select the option with the higher correlation",
         "required": true,
         "location": "aboveStimulus",
         "type": "numerical",
