@@ -117,3 +117,15 @@ export function generateDataSet(r: number, dataSize: number = 100) {
   yAry = yTransform(xAry, yAry, lam);
   return xAry.map((d, i) => [d, yAry[i]]);
 }
+
+export function generateCorrelatedDataset(xSorted: number[], r: number, seed: string): number[] {
+  const randomNumber = seedrandom(seed);
+
+  let yAry = getSTDNormalDistriArrayFixed(randomNumber, xSorted.length);
+  const rz = getCorrelation(xSorted, yAry);
+  const lam = getLambda(r, rz);
+
+  yAry = yTransform(xSorted, yAry, lam);
+
+  return yAry;
+}

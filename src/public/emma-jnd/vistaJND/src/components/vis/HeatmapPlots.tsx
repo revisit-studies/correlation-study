@@ -10,7 +10,7 @@ import {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import { select } from 'd3-selection';
-import { generateDataSetFixed } from '../../utils/dataGeneration';
+import { generateCorrelatedDataset, generateDataSetFixed } from '../../utils/dataGeneration';
 
 const width = 400;
 const height = 40;
@@ -23,10 +23,9 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const createChart = useCallback(() => {
-    const data: [number, number][] = generateDataSetFixed(r, seedRef.current) as [number, number][];
-
-    const xSorted = data.map((d) => d[0]).sort((a, b) => a - b);
-    const yCorrelated = data.map((d) => d[1]);
+    const dataUnsorted: [number, number][] = generateDataSetFixed(1, seedRef.current) as [number, number][];
+    const xSorted = dataUnsorted.map((d) => d[0]).sort((a, b) => a - b);
+    const yCorrelated = generateCorrelatedDataset(xSorted, r, seedRef.current);
 
     const svg = select(d3Container.current)
       .attr('width', width)
