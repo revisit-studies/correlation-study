@@ -5,7 +5,7 @@
  */
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { Group } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import HeatmapPlots from './HeatmapPlots';
 
@@ -36,13 +36,25 @@ export default function HeatmapWrapper({
 
   return higherFirst ? (
     <Group style={{ gap: '100px' }}>
-      <HeatmapPlots key={key} onClick={() => handleClick(1)} r={r1} />
-      <HeatmapPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
+      <Stack style={{ alignItems: 'center' }}>
+        <HeatmapPlots key={key} onClick={() => handleClick(1)} r={r1} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <HeatmapPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   ) : (
     <Group style={{ gap: '100px' }}>
-      <HeatmapPlots key={key} onClick={() => handleClick(2)} r={r2} />
-      <HeatmapPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
+      <Stack style={{ alignItems: 'center' }}>
+        <HeatmapPlots key={key} onClick={() => handleClick(2)} r={r2} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <HeatmapPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   );
 }

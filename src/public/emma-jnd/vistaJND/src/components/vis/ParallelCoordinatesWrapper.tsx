@@ -4,8 +4,7 @@
  *    This file is the wrapper component for the Parallel Coordinate plots
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { Group } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import ParallelCoordinates from './ParallelCoordinates';
 
@@ -31,14 +30,26 @@ export default function ParallelCoordinatesWrapper({ r1, r2, onClick }: {r1: num
   };
 
   return higherFirst ? (
-    <Group>
-      <ParallelCoordinates key={key} onClick={() => handleClick(1)} v={r1} />
-      <ParallelCoordinates key={key + 1} onClick={() => handleClick(2)} v={r2} />
+    <Group style={{ gap: '40px' }}>
+      <Stack style={{ alignItems: 'center' }}>
+        <ParallelCoordinates key={key} onClick={() => handleClick(1)} v={r1} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <ParallelCoordinates key={key + 1} onClick={() => handleClick(2)} v={r2} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   ) : (
-    <Group>
-      <ParallelCoordinates key={key} onClick={() => handleClick(2)} v={r2} />
-      <ParallelCoordinates key={key + 1} onClick={() => handleClick(1)} v={r1} />
+    <Group style={{ gap: '40px' }}>
+      <Stack style={{ alignItems: 'center' }}>
+        <ParallelCoordinates key={key} onClick={() => handleClick(2)} v={r2} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <ParallelCoordinates key={key + 1} onClick={() => handleClick(1)} v={r1} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   );
 }

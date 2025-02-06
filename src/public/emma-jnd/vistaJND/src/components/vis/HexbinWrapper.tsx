@@ -4,8 +4,7 @@
  *    This file is the wrapper component for the Scatter plots
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { Group } from '@mantine/core';
+import { Group, Stack, Text } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import HexbinPlots from './HexbinPlots';
 
@@ -35,14 +34,26 @@ export default function HexbinWrapper({
   };
 
   return higherFirst ? (
-    <Group>
-      <HexbinPlots key={key} onClick={() => handleClick(1)} r={r1} />
-      <HexbinPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
+    <Group style={{ gap: '40px' }}>
+      <Stack style={{ alignItems: 'center' }}>
+        <HexbinPlots key={key} onClick={() => handleClick(1)} r={r1} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <HexbinPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   ) : (
-    <Group>
-      <HexbinPlots key={key} onClick={() => handleClick(2)} r={r2} />
-      <HexbinPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
+    <Group style={{ gap: '40px' }}>
+      <Stack style={{ alignItems: 'center' }}>
+        <HexbinPlots key={key} onClick={() => handleClick(2)} r={r2} />
+        <Text>Option 1</Text>
+      </Stack>
+      <Stack style={{ alignItems: 'center' }}>
+        <HexbinPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
+        <Text>Option 2</Text>
+      </Stack>
     </Group>
   );
 }
