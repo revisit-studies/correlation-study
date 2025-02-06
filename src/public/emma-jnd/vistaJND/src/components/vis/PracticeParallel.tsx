@@ -1,51 +1,55 @@
+import { useState, useCallback } from 'react';
 import {
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import { Center, Stack, Text } from '@mantine/core';
-import { StimulusParams } from '../../../../../../store/types';
+  Center, Stack, Text, Button,
+} from '@mantine/core';
 import ParallelCoordinatesWrapper from './ParallelCoordinatesWrapper';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { StimulusParams } from '../../../../../../store/types';
 
 const lowArr = [0.1, 0.2, 0.3, 0.4, 0.5];
 const highArr = [0.6, 0.7, 0.8, 0.9, 1.0];
 
-export default function PracticeScatter({ setAnswer } : StimulusParams<Record<string, never>>) {
+const generateRValues = (arr: number[]): [number, number] => {
+  const r1 = arr[Math.floor(Math.random() * arr.length)];
+  let r2 = arr[Math.floor(Math.random() * arr.length)];
+  while (r1 === r2) {
+    r2 = arr[Math.floor(Math.random() * arr.length)];
+  }
+  return [r1, r2];
+};
+
+export default function PracticeParallel({
+  setAnswer,
+}: StimulusParams<Record<string, never>>) {
   const [counter, setCounter] = useState(0);
-  const [r1, setR1] = useState(highArr[Math.floor(Math.random() * highArr.length)]);
-  const [r2, setR2] = useState(highArr[Math.floor(Math.random() * highArr.length)]);
-  const [result, setResult] = useState('');
+  const [rValues, setRValues] = useState<[number, number]>(() => generateRValues(highArr));
+  const [result, setResult] = useState<string | null>(null);
+  const [showNext, setShowNext] = useState(false);
 
-  const setRValue = (arr: number[]) => {
-    setR1(arr[Math.floor(Math.random() * arr.length)]);
-    setR2(arr[Math.floor(Math.random() * arr.length)]);
-  };
-
-  const onClick = useCallback((n: number) => {
-    setCounter(counter + 1);
-
-    if ((n === 1 && r1 > r2) || (n === 2 && r2 > r1)) {
-      setResult('Correct');
-    } else {
-      setResult('Incorrect');
-    }
-    if (counter < 10) {
-      setRValue(highArr);
-    } else {
-      setRValue(lowArr);
-    }
-  }, [counter, r1, r2]);
-
-  useEffect(() => {
-    if (r1 === r2) {
-      if (counter < 10) {
-        setRValue(highArr);
-      } else {
-        setRValue(lowArr);
+  const onClick = useCallback(
+    (n: number) => {
+      const [r1, r2] = rValues;
+      if (result === null) {
+        if ((n === 1 && r1 > r2) || (n === 2 && r2 > r1)) {
+          setResult('Correct');
+        } else {
+          setResult('Incorrect');
+        }
+        setShowNext(true);
       }
-    }
-    if (counter === 20) {
+    },
+    [rValues, result],
+  );
+
+  const onNext = () => {
+    setResult(null);
+    setShowNext(false);
+    setCounter((prev) => prev + 1);
+
+    if (counter + 1 < 10) {
+      setRValues(generateRValues(highArr));
+    } else if (counter + 1 < 20) {
+      setRValues(generateRValues(lowArr));
+    } else {
       setAnswer({
         status: true,
         provenanceGraph: undefined,
@@ -53,7 +57,7 @@ export default function PracticeScatter({ setAnswer } : StimulusParams<Record<st
       });
       setResult('Practice Completed, please continue.');
     }
-  }, [counter]);
+  };
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
@@ -63,9 +67,23 @@ export default function PracticeScatter({ setAnswer } : StimulusParams<Record<st
       </Text>
       <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
       <Center>
-        <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
+        <ParallelCoordinatesWrapper
+          onClick={onClick}
+          r1={rValues[0]}
+          r2={rValues[1]}
+          shouldReRender={false}
+        />
       </Center>
-      <Text style={{ textAlign: 'center' }}>{result}</Text>
+      {result && (
+        <Text style={{ textAlign: 'center', marginTop: '1rem' }}>{result}</Text>
+      )}
+      {showNext && (
+        <Center style={{ justifyContent: 'flex-end' }}>
+          <Button onClick={onNext} style={{ marginTop: '1rem' }}>
+            Next
+          </Button>
+        </Center>
+      )}
     </Stack>
   );
 }
