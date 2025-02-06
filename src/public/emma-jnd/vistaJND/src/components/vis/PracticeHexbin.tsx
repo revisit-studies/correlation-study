@@ -78,7 +78,7 @@ export default function PracticeHexbin({
         <Text style={{ textAlign: 'center', marginTop: '1rem' }}>{result}</Text>
       )}
       {showNext && (
-        <Center>
+        <Center style={{ justifyContent: 'flex-end' }}>
           <Button onClick={onNext} style={{ marginTop: '1rem' }}>
             Next
           </Button>
