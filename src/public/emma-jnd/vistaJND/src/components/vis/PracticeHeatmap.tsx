@@ -5,23 +5,13 @@ import {
 import HeatmapWrapper from './HeatmapWrapper';
 import { StimulusParams } from '../../../../../../store/types';
 
-const lowArr = [0.1, 0.2, 0.3, 0.4, 0.5];
-const highArr = [0.6, 0.7, 0.8, 0.9, 1.0];
-
-const generateRValues = (arr: number[]): [number, number] => {
-  const r1 = arr[Math.floor(Math.random() * arr.length)];
-  let r2 = arr[Math.floor(Math.random() * arr.length)];
-  while (r1 === r2) {
-    r2 = arr[Math.floor(Math.random() * arr.length)];
-  }
-  return [r1, r2];
-};
+const practiceTrials: [number, number][] = [[0.3, 0.7], [0.9, 0.6], [0.6, 0.3], [0.6, 0.9], [0.3, 0.1], [0.5, 0.3], [0.9, 0.8], [0.6, 0.7], [0.99, 0.9]];
 
 export default function PracticeHeatmap({
   setAnswer,
 }: StimulusParams<Record<string, never>>) {
   const [counter, setCounter] = useState(0);
-  const [rValues, setRValues] = useState<[number, number]>(() => generateRValues(highArr));
+  const [rValues, setRValues] = useState<[number, number]>(practiceTrials[0]);
   const [result, setResult] = useState<string | null>(null);
   const [showNext, setShowNext] = useState(false);
 
@@ -43,12 +33,11 @@ export default function PracticeHeatmap({
   const onNext = () => {
     setResult(null);
     setShowNext(false);
-    setCounter((prev) => prev + 1);
+    const nextCounter = counter + 1;
+    setCounter(nextCounter);
 
-    if (counter + 1 < 10) {
-      setRValues(generateRValues(highArr));
-    } else if (counter + 1 < 20) {
-      setRValues(generateRValues(lowArr));
+    if (nextCounter < practiceTrials.length) {
+      setRValues(practiceTrials[nextCounter]);
     } else {
       setAnswer({
         status: true,
@@ -62,8 +51,9 @@ export default function PracticeHeatmap({
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
       <Text>
-        {counter}
-        /20
+        {counter + 1}
+        /
+        {practiceTrials.length}
       </Text>
       <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
       <Center>
