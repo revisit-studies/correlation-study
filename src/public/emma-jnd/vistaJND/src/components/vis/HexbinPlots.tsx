@@ -28,7 +28,7 @@ export default function HexbinPlots({ r, onClick } : { r: number, onClick: () =>
       left: 0,
       top: 20,
       right: 20,
-      bottom: 0,
+      bottom: 1,
     };
 
     const innerHeight = height - margin.bottom;
@@ -66,11 +66,11 @@ export default function HexbinPlots({ r, onClick } : { r: number, onClick: () =>
       .style('stroke', 'white')
       .style('stroke-width', '0.5px');
 
-    const xAxis = d3.axisBottom(xScale).ticks(5);
-    const yAxis = d3.axisLeft(yScale).ticks(5);
+    const xAxis = d3.axisBottom(xScale).ticks(0);
+    const yAxis = d3.axisLeft(yScale).ticks(0);
 
     svg.append('g')
-      .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`)
+      .attr('transform', `translate(${margin.left}, ${innerHeight})`)
       .call(xAxis);
 
     svg.append('g')
