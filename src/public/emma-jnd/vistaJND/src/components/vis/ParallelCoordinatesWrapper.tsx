@@ -4,7 +4,7 @@
  *    This file is the wrapper component for the Parallel Coordinate plots
  */
 
-import { Group, Stack, Text } from '@mantine/core';
+import { Group, Stack, Button } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import ParallelCoordinates from './ParallelCoordinates';
 
@@ -37,22 +37,22 @@ export default function ParallelCoordinatesWrapper({
     <Group style={{ gap: '40px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key} onClick={() => handleClick(1)} v={r1} />
-        <Text>Left</Text>
+        <Button onClick={() => handleClick(1)}>Left</Button>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key + 1} onClick={() => handleClick(2)} v={r2} />
-        <Text>Right</Text>
+        <Button onClick={() => handleClick(2)}>Right</Button>
       </Stack>
     </Group>
   ) : (
     <Group style={{ gap: '40px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key} onClick={() => handleClick(2)} v={r2} />
-        <Text>Left</Text>
+        <Button onClick={() => handleClick(2)}>Left</Button>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key + 1} onClick={() => handleClick(1)} v={r1} />
-        <Text>Right</Text>
+        <Button onClick={() => handleClick(1)}>Right</Button>
       </Stack>
     </Group>
   );

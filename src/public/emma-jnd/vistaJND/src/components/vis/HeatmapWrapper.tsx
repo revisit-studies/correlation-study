@@ -4,8 +4,7 @@
  *    This file is the wrapper component for the Scatter plots
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-import { Group, Stack, Text } from '@mantine/core';
+import { Group, Stack, Button } from '@mantine/core';
 import { useMemo, useState } from 'react';
 import HeatmapPlots from './HeatmapPlots';
 
@@ -38,22 +37,22 @@ export default function HeatmapWrapper({
     <Group style={{ gap: '100px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key} onClick={() => handleClick(1)} r={r1} />
-        <Text>Left</Text>
+        <Button onClick={() => handleClick(1)}>Left</Button>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
-        <Text>Right</Text>
+        <Button onClick={() => handleClick(2)}>Right</Button>
       </Stack>
     </Group>
   ) : (
     <Group style={{ gap: '100px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key} onClick={() => handleClick(2)} r={r2} />
-        <Text>Left</Text>
+        <Button onClick={() => handleClick(2)}>Left</Button>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
-        <Text>Right</Text>
+        <Button onClick={() => handleClick(1)}>Right</Button>
       </Stack>
     </Group>
   );
