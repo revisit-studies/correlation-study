@@ -5,7 +5,6 @@
  *    Meant for easy understanding of the experiment code.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import {
   useCallback,
   useEffect,
@@ -75,7 +74,12 @@ function JND({ setAnswer } : StimulusParams<Record<string, never>>) {
         {counter}
         /50
       </Text>
-      <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
+      <Text style={{
+        textAlign: 'center', paddingBottom: '24px', fontSize: '18px', fontWeight: 'bold',
+      }}
+      >
+        Select the option with the higher correlation
+      </Text>
       <Center>
         <ParallelCoordinatesWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>

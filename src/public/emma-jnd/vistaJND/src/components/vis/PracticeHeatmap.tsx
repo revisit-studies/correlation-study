@@ -55,7 +55,12 @@ export default function PracticeHeatmap({
         /
         {practiceTrials.length}
       </Text>
-      <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
+      <Text style={{
+        textAlign: 'center', paddingBottom: '24px', fontSize: '18px', fontWeight: 'bold',
+      }}
+      >
+        Select the option with the higher correlation
+      </Text>
       <Center>
         <HeatmapWrapper
           onClick={onClick}

@@ -10,8 +10,6 @@
  *    subgroups".
  */
 
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-plusplus */
 import {
   useCallback,
   useEffect,
@@ -94,7 +92,12 @@ export default function JND({ setAnswer, parameters } : StimulusParams<{r1: numb
 
   return (
     <Stack style={{ width: '100%', height: '100%' }}>
-      <Text style={{ textAlign: 'center', paddingBottom: '24px' }}>Select the option with the higher correlation</Text>
+      <Text style={{
+        textAlign: 'center', paddingBottom: '24px', fontSize: '18px', fontWeight: 'bold',
+      }}
+      >
+        Select the option with the higher correlation
+      </Text>
       <Center>
         <ScatterWrapper onClick={onClick} r1={r1} r2={r2} />
       </Center>
