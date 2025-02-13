@@ -22,19 +22,19 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
   const d3Container = useRef(null);
 
   const [isHover, setIsHover] = useState<boolean>(false);
+  const margin = {
+    left: 40,
+    top: 20,
+    right: 20,
+    bottom: 20,
+  };
+
+  const innerHeight = height - margin.bottom;
+  const innerWidth = width - margin.left - margin.right;
 
   const createChart = useCallback(() => {
     const data = generateDataSetFixed(r, Date.now().toString());
     // data in format [x1,y1], [x2,y2]
-    const margin = {
-      left: 40,
-      top: 20,
-      right: 20,
-      bottom: 20,
-    };
-
-    const innerHeight = height - margin.bottom;
-    const innerWidth = width - margin.left - margin.right;
 
     const xAry = data.map((d) => d[0]);
     const yAry = data.map((d) => d[1]);
@@ -94,8 +94,8 @@ export default function ScatterPlots({ r, onClick } : { r: number, onClick: () =
         onClick={onClick}
         x={0}
         y={0}
-        width={width}
-        height={height}
+        width={innerWidth}
+        height={innerHeight}
         cursor="pointer"
         opacity={isHover ? 0.2 : 0.0}
         fill="cornflowerblue"
