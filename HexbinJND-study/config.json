@@ -57,6 +57,7 @@
     "practice": {
       "type": "react-component",
       "path": "emma-jnd/vistaJND/src/components/vis/PracticeHexbin.tsx",
+      "nextButtonLocation": "sidebar",
       "response": [{ 
         "id": "completed",
         "prompt": "Did you complete the practice?",
