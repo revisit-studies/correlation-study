@@ -33,14 +33,6 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
 
     svg.selectAll('*').remove();
 
-    // const xScale = scaleLinear()
-    //   .domain([d3.min(xSorted)!, d3.max(xSorted)!])
-    //   .range([0, width]);
-
-    // const yScale = scaleLinear()
-    //   .domain([d3.min(yCorrelated)!, d3.max(yCorrelated)!])
-    //   .range([0, width]);
-
     svg.append('g')
       .selectAll('rect')
       .data(xSorted)
@@ -52,7 +44,7 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
       .attr('height', height)
       .style('fill', (d) => d3.interpolateRdBu((d - d3.min(xSorted)!) / (d3.max(xSorted)! - d3.min(xSorted)!)))
       .style('cursor', 'pointer')
-      .on('click', () => onClick());
+      .on('click', onClick);
 
     svg.append('g')
       .selectAll('rect')
@@ -65,7 +57,7 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
       .attr('height', height)
       .style('fill', (d) => d3.interpolateRdBu((d - d3.min(yCorrelated)!) / (d3.max(yCorrelated)! - d3.min(yCorrelated)!)))
       .style('cursor', 'pointer')
-      .on('click', () => onClick());
+      .on('click', onClick);
   }, [r, onClick]);
 
   useEffect(() => {
@@ -73,24 +65,24 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
   }, [createChart]);
 
   return (
-    <svg
-      ref={d3Container}
-      className="d3-component"
-      width={width}
-      height={height * 2 + spacing}
+    <div
+      onClick={onClick}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      style={{
+        display: 'inline-block',
+        padding: '5px',
+        backgroundColor: isHover ? 'cornflowerblue' : 'transparent',
+        opacity: isHover ? 0.8 : 1,
+        cursor: 'pointer',
+      }}
     >
-      <rect
-        onClick={onClick}
-        x={0}
-        y={0}
+      <svg
+        ref={d3Container}
+        className="d3-component"
         width={width}
         height={height * 2 + spacing}
-        cursor="pointer"
-        opacity={isHover ? 0.2 : 0.0}
-        fill="none"
       />
-    </svg>
+    </div>
   );
 }
