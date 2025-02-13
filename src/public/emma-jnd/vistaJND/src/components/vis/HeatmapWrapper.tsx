@@ -38,22 +38,22 @@ export default function HeatmapWrapper({
     <Group style={{ gap: '100px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key} onClick={() => handleClick(1)} r={r1} />
-        <Text>Option 1</Text>
+        <Text>Left</Text>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key + 1} onClick={() => handleClick(2)} r={r2} />
-        <Text>Option 2</Text>
+        <Text>Right</Text>
       </Stack>
     </Group>
   ) : (
     <Group style={{ gap: '100px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key} onClick={() => handleClick(2)} r={r2} />
-        <Text>Option 1</Text>
+        <Text>Left</Text>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <HeatmapPlots key={key + 1} onClick={() => handleClick(1)} r={r1} />
-        <Text>Option 2</Text>
+        <Text>Right</Text>
       </Stack>
     </Group>
   );

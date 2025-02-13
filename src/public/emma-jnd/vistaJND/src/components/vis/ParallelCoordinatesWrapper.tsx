@@ -37,22 +37,22 @@ export default function ParallelCoordinatesWrapper({
     <Group style={{ gap: '40px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key} onClick={() => handleClick(1)} v={r1} />
-        <Text>Option 1</Text>
+        <Text>Left</Text>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key + 1} onClick={() => handleClick(2)} v={r2} />
-        <Text>Option 2</Text>
+        <Text>Right</Text>
       </Stack>
     </Group>
   ) : (
     <Group style={{ gap: '40px' }}>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key} onClick={() => handleClick(2)} v={r2} />
-        <Text>Option 1</Text>
+        <Text>Left</Text>
       </Stack>
       <Stack style={{ alignItems: 'center' }}>
         <ParallelCoordinates key={key + 1} onClick={() => handleClick(1)} v={r1} />
-        <Text>Option 2</Text>
+        <Text>Right</Text>
       </Stack>
     </Group>
   );
