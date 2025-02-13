@@ -33,10 +33,10 @@ export default function PracticeHeatmap({
   const onNext = () => {
     setResult(null);
     setShowNext(false);
-    const nextCounter = counter + 1;
+    const nextCounter = counter < practiceTrials.length - 1 ? counter + 1 : practiceTrials.length - 1;
     setCounter(nextCounter);
 
-    if (nextCounter < practiceTrials.length) {
+    if (nextCounter < practiceTrials.length - 1) {
       setRValues(practiceTrials[nextCounter]);
     } else {
       setAnswer({
