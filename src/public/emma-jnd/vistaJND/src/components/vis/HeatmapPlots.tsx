@@ -72,7 +72,7 @@ export default function HeatmapPlots({ r, onClick }: { r: number, onClick: () =>
       style={{
         display: 'inline-block',
         padding: '5px',
-        backgroundColor: isHover ? 'cornflowerblue' : 'transparent',
+        border: isHover ? '4px solid cornflowerblue' : '4px solid transparent',
         opacity: isHover ? 0.8 : 1,
         cursor: 'pointer',
       }}
